@@ -1,12 +1,28 @@
-<p> {{message}} </p>
-<video id=example-video width=600 height=300 class="video-js vjs-default-skin" controls>
-  <source
-    src="http://192.168.15.106:1935/live/liveStream/playlist.m3u8"
-    type="application/x-mpegURL">
-</video>
+<div class="container">
+  <p> {{message}} </p>
+
+  <video id=video_stream class="video-js vjs-default-skin video_canvas" controls>
+    <source
+      src={{streamUrl}}
+      type="application/x-mpegURL">
+  </video>
+
+    <mat-form-field class="input-container">
+      <input matInput [(ngModel)]="streamUrl" placeholder="Stream URL">
+    </mat-form-field>
+    <button mat-flat-button	onclick="play()">Go</button>
+</div>
+
 <script src="video.js"></script>
 <script src="videojs-contrib-hls.min.js"></script>
 <script>
-  var player = videojs('example-video');
-  player.play();
+  function play() {
+    var player = videojs('video_stream',{
+      autoplay: true
+    });
+    player.play();
+  }
+
+  play()
 </script>
+

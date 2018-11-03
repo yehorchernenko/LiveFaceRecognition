@@ -1,0 +1,21 @@
+.video_canvas {
+  min-width: 30%;
+  min-height: 40%;
+
+  float: left;
+}
+.input-container {
+  margin-left: 50px;
+  min-width: 50%;
+}
+
+.container {
+  width: 100%;
+  padding-left: 50px;
+  padding-right: 50px;
+
+  display: block;
+  position: absolute;
+}
+
+

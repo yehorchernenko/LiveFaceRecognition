@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class StreamComponent implements OnInit {
   message = 'Waiting...';
+  streamUrl = '';
 
   constructor(private api: ApiService) { }
 
