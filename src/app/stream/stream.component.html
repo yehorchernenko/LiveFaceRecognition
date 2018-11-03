@@ -10,7 +10,7 @@
     <mat-form-field class="input-container">
       <input matInput [(ngModel)]="streamUrl" placeholder="Stream URL">
     </mat-form-field>
-    <button mat-flat-button	onclick="play()">Go</button>
+    <button mat-flat-button	onclick="play()" (click)="startRecognition()">Go</button>
 </div>
 
 <script src="video.js"></script>

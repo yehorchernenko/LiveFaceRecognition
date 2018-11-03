@@ -25,6 +25,7 @@
     "body-parser": "^1.18.3",
     "core-js": "^2.5.4",
     "express": "^4.16.4",
+    "ffmpeg": "0.0.4",
     "hammerjs": "^2.0.8",
     "http-errors": "^1.7.1",
     "mongoose": "^5.3.8",

@@ -23,4 +23,13 @@ export class StreamComponent implements OnInit {
       });
   }
 
+  startRecognition() {
+    this.api.startRecognition(this.streamUrl).subscribe( res => {
+      console.log(res);
+      this.message = res.message;
+    }, err => {
+        console.log(err);
+    });
+  }
+
 }
