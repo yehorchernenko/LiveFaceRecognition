@@ -7,7 +7,7 @@ const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'})
 };
 const apiUrl = '/api';
-const startRecognitionUrl = '/api/startRecognitionUrl';
+const startRecognitionUrl = '/api/startRecognition';
 
 @Injectable({
   providedIn: 'root'
@@ -44,7 +44,7 @@ export class ApiService {
 
   startRecognition(url: string): Observable<any> {
     const data = {
-      'url': url
+      'enterCameraUrl': url
     };
     return this.http.post(startRecognitionUrl, data, httpOptions)
       .pipe(
