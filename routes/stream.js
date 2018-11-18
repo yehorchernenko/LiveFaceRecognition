@@ -2,7 +2,23 @@ const express = require('express');
 const router = express.Router();
 const cmd=require('node-cmd');
 
-const enterSnapshotPath = './snapshots/enterSnapshot.jpg';
+const enterSnapshotPath = './snapshots/enterSnapshot';
+
+var enterCameraUrl = null;
+
+setInterval(() => {
+  console.log('enterd');
+  if (enterCameraUrl != null) {
+    console.log('try');
+    try {
+      cmd.run(`ffmpeg -i ${enterCameraUrl} -vframes 1 ${enterSnapshotPath}${Date.now()}.jpg`);
+      console.log('success');
+    } catch (err) {
+      console.log(err);
+    }
+
+  }
+}, 1000);
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -10,10 +26,9 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/startRecognition', function (req, res) {
+  enterCameraUrl = req.body.enterCameraUrl;
 
-  cmd.run(`ffmpeg -i ${req.body.enterCameraUrl} -vframes 1 ${enterSnapshotPath}`);
-
-  res.send({"message": "Image created"});
+  res.send({"message": "Recognition started"});
 });
 
 module.exports = router;
