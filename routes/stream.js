@@ -1,13 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const cmd=require('node-cmd');
-
+const cmd = require('node-cmd');
+const faceCrop = require('../models/FaceCrop');
 const enterSnapshotPath = './snapshots/enterSnapshot';
 
 var enterCameraUrl = null;
 
 setInterval(() => {
-  console.log('enterd');
   if (enterCameraUrl != null) {
     console.log('try');
     try {
@@ -22,7 +21,8 @@ setInterval(() => {
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.send({"message": "Stream app working!"});
+  faceCrop.startTraining();
+  res.status(200);
 });
 
 router.post('/startRecognition', function (req, res) {
