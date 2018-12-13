@@ -1,0 +1,19 @@
+<div class="container">
+  <form clas="form">
+    <mat-form-field class="full-width">
+      <input matInput placeholder="Name" [(ngModel)]="userName">
+    </mat-form-field>
+    <mat-form-field class="full-width">
+      <input matInput placeholder="Email" [(ngModel)]="userEmail">
+    </mat-form-field>
+      <label>Images
+        <mat-form-field class="full-width">
+          <input matInput placeholder="Image 1" type="file" multiple accept="image/jpeg" (change)="onFileChanged($event)">
+        </mat-form-field>
+      </label>
+      <button class="add-newuser-btn" mat-flat-button type="button" (click)="addNewUser()">Add new user</button>
+  </form>
+</div>
+<h2>
+  Status info: {{userName}}
+</h2>

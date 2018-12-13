@@ -8,6 +8,7 @@ const httpOptions = {
 };
 const apiUrl = '/api';
 const startRecognitionUrl = '/api/startRecognition';
+const newUserURL = '/api/newuser';
 
 @Injectable({
   providedIn: 'root'
@@ -51,4 +52,21 @@ export class ApiService {
         catchError(this.handleError)
       );
   }
+
+  addNewUser(email: string, name: string, images: [File]): Observable<any> {
+
+    const uploadData = new FormData();
+    images.forEach((file, index) => {
+      uploadData.append(`image${index}`, file, file.name);
+    });
+
+    uploadData.append('email', email);
+    uploadData.append('name', name)
+
+    return this.http.post(newUserURL, uploadData).pipe(
+      catchError(this.handleError)
+    );
+
+  }
+
 }

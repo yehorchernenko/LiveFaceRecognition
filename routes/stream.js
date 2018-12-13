@@ -31,4 +31,9 @@ router.post('/startRecognition', function (req, res) {
   res.send({"message": "Recognition started"});
 });
 
+router.post('/newuser', function (req, res) {
+  console.log(req);
+  res.sendStatus(200)
+});
+
 module.exports = router;

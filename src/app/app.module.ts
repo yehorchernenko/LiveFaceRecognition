@@ -17,24 +17,28 @@ import {
   MatIconModule,
   MatButtonModule,
   MatCardModule,
-  MatFormFieldModule } from '@angular/material';
+  MatFormFieldModule,
+} from '@angular/material';
+import { NewUserComponent } from './new-user/new-user.component';
 
 const appRoutes: Routes = [
+  {
+    path: 'newuser',
+    component: NewUserComponent,
+    data: { title: 'Add new user' }
+  },
   {
     path: 'stream',
     component: StreamComponent,
     data: { title: 'Video stream' }
   },
-  { path: '',
-    redirectTo: '/stream',
-    pathMatch: 'full'
-  }
   ];
 
 @NgModule({
   declarations: [
     AppComponent,
-    StreamComponent
+    StreamComponent,
+    NewUserComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
@@ -51,7 +55,7 @@ const appRoutes: Routes = [
     MatIconModule,
     MatButtonModule,
     MatCardModule,
-    MatFormFieldModule
+    MatFormFieldModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
