@@ -11,25 +11,20 @@ const getFaceImage = (grayImg) => {
   return grayImg.getRegion(faceRects[0]);
 };
 
-const startTraining = () => {
-  const imgsPath = path.resolve('./snapshots/');
+const cropImages = (name) => {
+  const imgsPath = path.resolve('./tmp/uploads/');
   const imgFiles = fs.readdirSync(imgsPath);
 
-  const images = imgFiles.map(file => path.resolve(imgsPath, file))
+  return imgFiles.map(file => path.resolve(imgsPath, file))
     .map(filePath => cv.imread(filePath))
     .map(img => img.bgrToGray())
     .map(getFaceImage)
     .filter(value => value != null)
     .map(faceImg => faceImg.resize(150, 150))
     .forEach(imgData => {
-        cv.imwrite('./snapshots/face.jpg', imgData);
-      // fs.writeFile('./snapshots/face.txt', imgData, 'binary', function(err){
-      //   if (err) throw err;
-      //   console.log('File saved.');
-      // })
+        cv.imwrite(`./uploads/${name}-${new Date().getMilliseconds()}.jpg`, imgData);
     });
 };
 
 
-
-module.exports.startTraining = startTraining;
+module.exports.cropImages = cropImages;

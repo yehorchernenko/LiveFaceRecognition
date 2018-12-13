@@ -3,6 +3,8 @@ const router = express.Router();
 const cmd = require('node-cmd');
 const faceCrop = require('../models/FaceCrop');
 const enterSnapshotPath = './snapshots/enterSnapshot';
+const fs = require('fs');
+const path = require('path');
 
 var multer  = require('multer');
 var storage = multer.diskStorage({
@@ -10,8 +12,9 @@ var storage = multer.diskStorage({
     cb(null, 'tmp/uploads/')
   },
   filename: function (req, file, cb) {
+    /** filed with image must be last otherwise body won't be reachable*/
     console.log(req.body);
-    cb(null, req.body.email + '_' + file.originalname + '.jpg')
+    cb(null, req.body.email + '_' + file.originalname)
   }
 });
 
@@ -46,6 +49,18 @@ router.post('/startRecognition', function (req, res) {
 });
 
 router.post('/user/new', upload, function (req, res) {
+
+  faceCrop.cropImages(req.body.email);
+  fs.readdir('tmp/uploads', (err, files) => {
+    files.forEach((file) => {
+      if (file.includes(req.body.email)) {
+        fs.unlink(path.resolve('tmp/uploads', file), (removeErr) => {
+          if (removeErr) { throw  removeErr }
+        })
+      }
+
+    })
+  });
 
   res.sendStatus(200)
 });
