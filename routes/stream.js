@@ -4,6 +4,20 @@ const cmd = require('node-cmd');
 const faceCrop = require('../models/FaceCrop');
 const enterSnapshotPath = './snapshots/enterSnapshot';
 
+var multer  = require('multer');
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'tmp/uploads/')
+  },
+  filename: function (req, file, cb) {
+    console.log(req.body);
+    cb(null, req.body.email + '_' + file.originalname + '.jpg')
+  }
+});
+
+var upload = multer({ storage: storage }).array('images');
+
+
 var enterCameraUrl = null;
 
 setInterval(() => {
@@ -31,8 +45,8 @@ router.post('/startRecognition', function (req, res) {
   res.send({"message": "Recognition started"});
 });
 
-router.post('/newuser', function (req, res) {
-  console.log(req);
+router.post('/user/new', upload, function (req, res) {
+
   res.sendStatus(200)
 });
 
