@@ -9,7 +9,7 @@ var apiRouter = require('./routes/stream');
 var app = express();
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/mean-angular6', { promiseLibrary: require('bluebird') })
+mongoose.connect('mongodb://localhost:27017/faceLiveRec', { promiseLibrary: require('bluebird') })
   .then(() =>  console.log('connection successful'))
   .catch((err) => console.error(err));
 

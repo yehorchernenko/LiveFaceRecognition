@@ -5,16 +5,20 @@ const faceCrop = require('../models/FaceCrop');
 const enterSnapshotPath = './snapshots/enterSnapshot';
 const fs = require('fs');
 const path = require('path');
+const User = require('../entities/User');
+const _ = require('lodash');
+
+const tmpStoragePath = 'tmp/uploads/';
 
 var multer  = require('multer');
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'tmp/uploads/')
+    cb(null, tmpStoragePath)
   },
   filename: function (req, file, cb) {
     /** filed with image must be last otherwise body won't be reachable*/
     console.log(req.body);
-    cb(null, req.body.email + '_' + file.originalname)
+    cb(null, req.body.email + '_' + file.originalname);
   }
 });
 
@@ -50,19 +54,37 @@ router.post('/startRecognition', function (req, res) {
 
 router.post('/user/new', upload, function (req, res) {
 
-  faceCrop.cropImages(req.body.email);
-  fs.readdir('tmp/uploads', (err, files) => {
+  let body = _.pick(req.body, ['displayName','email']);
+  let user = new User(body);
+
+  user.save().then(() => {
+    console.log('User created');
+
+    faceCrop.cropImages(req.body.email, tmpStoragePath);
+    emptyTmpDir(req.body.email);
+
+    res.sendStatus(200)
+
+  }).catch(error => {
+    emptyTmpDir(req.body.email);
+    console.log(`User creation error ${error}`);
+
+    res.sendStatus(404)
+  });
+
+});
+
+function emptyTmpDir(fileName) {
+  fs.readdir(tmpStoragePath, (err, files) => {
     files.forEach((file) => {
-      if (file.includes(req.body.email)) {
-        fs.unlink(path.resolve('tmp/uploads', file), (removeErr) => {
+      if (file.includes(fileName)) {
+        fs.unlink(path.resolve(tmpStoragePath, file), (removeErr) => {
           if (removeErr) { throw  removeErr }
         })
       }
 
     })
   });
-
-  res.sendStatus(200)
-});
+}
 
 module.exports = router;
