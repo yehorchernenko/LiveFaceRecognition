@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const cmd = require('node-cmd');
 const faceCrop = require('../models/FaceCrop');
+const TrainRecognizer = require('../models/TrainRecognizer');
 const enterSnapshotPath = './snapshots/enterSnapshot';
 const fs = require('fs');
 const path = require('path');
@@ -57,12 +58,15 @@ router.post('/user/new', upload, function (req, res) {
   let body = _.pick(req.body, ['displayName','email']);
   let user = new User(body);
 
-  user.save().then(() => {
+  user.save().then((newUser) => {
     console.log('User created');
 
     faceCrop.cropImages(req.body.email, tmpStoragePath);
-    emptyTmpDir(req.body.email);
 
+    let trainRecon = new TrainRecognizer();
+    trainRecon.trainFaceByUser(newUser);
+
+    emptyTmpDir(req.body.email);
     res.sendStatus(200)
 
   }).catch(error => {
