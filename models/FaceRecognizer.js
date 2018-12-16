@@ -105,6 +105,13 @@ class TrainRecognizer {
       let prediction = recognizer.predictBest(croppedImage);
       console.log('%s (%s)', prediction.className, prediction.distance);
 
+      if (prediction.distance < 0.6) {
+        console.log('updated model for ', prediction.className);
+        recognizer.addFaces([croppedImage], prediction.className);
+
+        fs.writeFileSync('./uploads/model.json', JSON.stringify(recognizer.serialize()));
+      }
+
       return prediction;
     }
   }

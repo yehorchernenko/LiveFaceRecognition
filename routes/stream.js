@@ -38,7 +38,9 @@ setInterval(() => {
       exec(`ffmpeg -i ${enterCameraUrl} -vframes 1 ${imagePath}`, 2500);
       faceRecon.predict(imagePath);
 
-      fs.unlink(imagePath, (err) => console.log(err))
+      fs.unlink(imagePath, (err) => {
+        if (err) { console.log(err); }
+      })
 
     } catch (err) {
       console.log(err);
