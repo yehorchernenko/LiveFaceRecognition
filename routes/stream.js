@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const cmd = require('node-cmd');
-const TrainRecognizer = require('../models/FaceRecognizer');
+const FaceRecognizer = require('../models/FaceRecognizer');
 const enterSnapshotPath = './snapshots/enterSnapshot';
 const fs = require('fs');
 const path = require('path');
@@ -42,7 +42,6 @@ setInterval(() => {
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  faceCrop.startTraining();
   res.status(200);
 });
 
@@ -59,12 +58,12 @@ router.post('/user/new', upload, function (req, res) {
 
   user.save().then((newUser) => {
     console.log('User created');
-    let trainRecon = new TrainRecognizer();
+    let faceRecon = new FaceRecognizer();
 
-    trainRecon.cropImages(req.body.email, tmpStoragePath);
+    faceRecon.cropImages(req.body.email, tmpStoragePath);
 
 
-    trainRecon.trainFaceByUser(newUser);
+    faceRecon.trainFaceByUser(newUser);
 
     emptyTmpDir(req.body.email);
     res.sendStatus(200)
@@ -76,6 +75,21 @@ router.post('/user/new', upload, function (req, res) {
     res.sendStatus(404)
   });
 
+});
+
+router.post('/user/predict', upload, function (req, res) {
+  const imgsPath = path.resolve(tmpStoragePath);
+  const imgFiles = fs.readdirSync(imgsPath);
+
+  let faceRecon = new FaceRecognizer();
+
+  imgFiles.forEach(imgPath => {
+    faceRecon.predict(path.resolve(imgsPath, imgPath))
+  });
+
+  emptyTmpDir();
+
+  res.sendStatus(200);
 });
 
 function emptyTmpDir(fileName) {

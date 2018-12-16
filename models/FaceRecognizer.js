@@ -20,10 +20,22 @@ class TrainRecognizer {
     recognizer.addFaces(faces, user.email);
 
     const modelState = recognizer.serialize();
-    fs.writeFileSync('./uploads/model.json', JSON.stringify(modelState));
+    if (fs.existsSync('./uploads/model.json')) {
+      fs.readFile('./uploads/model.json', function (err, data) {
+        if (err) throw new Error('Unable to open model.json');
 
+        var json = JSON.parse(data);
 
-    this.test(user)
+        modelState.forEach(value => {
+          json.push(value);
+        });
+
+        console.log(json.length);
+        fs.writeFileSync('./uploads/model.json', JSON.stringify(json));
+      })
+    } else {
+      fs.writeFileSync('./uploads/model.json', JSON.stringify(modelState));
+    }
   }
 
   getFaceImage (grayImg) {
@@ -74,6 +86,27 @@ class TrainRecognizer {
       console.log('%s (%s)', prediction.className, prediction.distance)
 
     })
+  }
+
+  predict(imgPath) {
+    let image = this.getFaceImage(cv.imread(imgPath).bgrToGray()).resize(150,150);
+
+    console.log(imgPath);
+    if (image) {
+      cv.imwrite(imgPath, image);
+
+      let croppedImage = fr.loadImage(imgPath);
+
+      const recognizer = fr.FaceRecognizer();
+      const modelState = require('../uploads/model.json');
+
+      recognizer.load(modelState);
+
+      recognizer.predict(croppedImage).forEach(prediction => {
+        console.log('%s (%s)', prediction.className, prediction.distance)
+      })
+
+    }
   }
 
 }
