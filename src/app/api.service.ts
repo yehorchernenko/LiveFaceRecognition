@@ -2,13 +2,18 @@ import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { catchError, tap, map } from 'rxjs/operators';
+import { User } from './user';
 
 const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'})
 };
 const apiUrl = '/api';
 const startRecognitionUrl = '/api/startRecognition';
-const newUserURL = '/api/newuser';
+const newUserURL = '/api/user/new';
+
+const httpUploadOptions = {
+  headers: new HttpHeaders({ "Content-Type": "multipart/form-data" })
+};
 
 @Injectable({
   providedIn: 'root'
@@ -53,20 +58,16 @@ export class ApiService {
       );
   }
 
-  addNewUser(email: string, name: string, images: [File]): Observable<any> {
-
+  addNewUser(user: User): Observable<any> {
     const uploadData = new FormData();
-    images.forEach((file, index) => {
-      uploadData.append(`image${index}`, file, file.name);
-    });
+    uploadData.append('displayName', user.displayName);
+    uploadData.append('email', user.email);
+    // TODO: - Add images uploading
+    // uploadData.append('images', user.images[0], user.images[0].name);
 
-    uploadData.append('email', email);
-    uploadData.append('name', name)
-
-    return this.http.post(newUserURL, uploadData).pipe(
+    return this.http.post(newUserURL, uploadData, httpUploadOptions).pipe(
       catchError(this.handleError)
     );
-
   }
 
 }

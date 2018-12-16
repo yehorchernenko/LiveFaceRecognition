@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../api.service';
+import { User } from '../user';
+import { AlertsService } from 'angular-alert-module';
 
 @Component({
   selector: 'app-new-user',
@@ -7,28 +9,30 @@ import { ApiService } from '../api.service';
   styleUrls: ['./new-user.component.css']
 })
 export class NewUserComponent implements OnInit {
-  btnTitle = 'Fill gaps to create new user.';
+  message = '';
+  model = new User('', '');
 
-  userName = '';
-  userEmail = '';
-  selectedImages: [File];
-
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService, private alerts: AlertsService) { }
 
   ngOnInit() {
-    this.btnTitle = 'Add btn';
   }
 
-  onFileChanged(event) {
-    this.btnTitle = 'Add btn';
-    this.selectedImages = event.target.files;
-  }
-
-  addNewUser() {
-    this.btnTitle = 'Creating new user';
-    this.apiService.addNewUser(this.userEmail, this.userName, this.selectedImages).subscribe(event => {
-        this.btnTitle = 'Uploading images';
+  onSubmit() {
+    this.message = 'Creating new user...';
+    this.apiService.addNewUser(this.model).subscribe(res => {
+      this.message = res;
+      this.alerts.setMessage(`New user successfully created`, 'success');
+      this.model = new User('', '');
+    }, error => {
+      this.message = error;
+      this.alerts.setMessage(`Error occurred ${error}`, 'error');
+      this.model = new User('', '');
     });
   }
 
+  onImagesChanged(event) {
+    this.model.images = event.target.files;
+  }
+
+  get diagnostic() { return JSON.stringify(this.model); }
 }

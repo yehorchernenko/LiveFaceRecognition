@@ -7,6 +7,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AlertsModule } from 'angular-alert-module';
 
 import {
   MatInputModule,
@@ -42,6 +43,7 @@ const appRoutes: Routes = [
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
+    AlertsModule.forRoot(),
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
