@@ -8,6 +8,10 @@
 # dependencies
 /node_modules
 
+#uploads
+/uploads
+/tmp/uploads
+
 # IDEs and editors
 /.idea
 .project

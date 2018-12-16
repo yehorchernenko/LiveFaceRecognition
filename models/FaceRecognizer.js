@@ -83,7 +83,7 @@ class TrainRecognizer {
     faces.forEach((face,i) => {
       const prediction = recognizer.predictBest(face);
 
-      console.log('%s (%s)', prediction.className, prediction.distance)
+      console.log('%s (%s)', prediction.className, prediction.distance);
 
     })
   }
@@ -91,7 +91,6 @@ class TrainRecognizer {
   predict(imgPath) {
     let image = this.getFaceImage(cv.imread(imgPath).bgrToGray()).resize(150,150);
 
-    console.log(imgPath);
     if (image) {
       cv.imwrite(imgPath, image);
 
@@ -102,10 +101,10 @@ class TrainRecognizer {
 
       recognizer.load(modelState);
 
-      recognizer.predict(croppedImage).forEach(prediction => {
-        console.log('%s (%s)', prediction.className, prediction.distance)
-      })
+      let prediction = recognizer.predictBest(croppedImage);
+      console.log('%s (%s)', prediction.className, prediction.distance);
 
+      return prediction;
     }
   }
 
