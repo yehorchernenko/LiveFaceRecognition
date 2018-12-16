@@ -89,10 +89,11 @@ class TrainRecognizer {
   }
 
   predict(imgPath) {
-    let image = this.getFaceImage(cv.imread(imgPath).bgrToGray()).resize(150,150);
+    console.log(imgPath);
+    let image = this.getFaceImage(cv.imread(imgPath).bgrToGray())
 
     if (image) {
-      cv.imwrite(imgPath, image);
+      cv.imwrite(imgPath, image.resize(150,150));
 
       let croppedImage = fr.loadImage(imgPath);
 

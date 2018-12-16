@@ -2,11 +2,14 @@ const express = require('express');
 const router = express.Router();
 const cmd = require('node-cmd');
 const FaceRecognizer = require('../models/FaceRecognizer');
-const enterSnapshotPath = './snapshots/enterSnapshot';
+const enterSnapshotPath = 'snapshots/enterSnapshot';
 const fs = require('fs');
 const path = require('path');
 const User = require('../entities/User');
 const _ = require('lodash');
+let faceRecon = new FaceRecognizer();
+let exec = require('sync-exec');
+
 
 const tmpStoragePath = 'tmp/uploads/';
 
@@ -29,15 +32,19 @@ var enterCameraUrl = null;
 
 setInterval(() => {
   if (enterCameraUrl != null) {
-    console.log('try');
     try {
-      cmd.run(`ffmpeg -i ${enterCameraUrl} -vframes 1 ${enterSnapshotPath}${Date.now()}.jpg`);
-      console.log('success');
+      let imagePath = path.resolve(enterSnapshotPath,`${(new Date()).getMilliseconds()}.jpg`);
+
+      exec(`ffmpeg -i ${enterCameraUrl} -vframes 1 ${imagePath}`, 2500);
+      faceRecon.predict(imagePath);
+
+      fs.unlink(imagePath, (err) => console.log(err))
+
     } catch (err) {
       console.log(err);
     }
   }
-}, 1000);
+}, 5000);
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -57,7 +64,6 @@ router.post('/user/new', upload, function (req, res) {
 
   user.save().then((newUser) => {
     console.log('User created');
-    let faceRecon = new FaceRecognizer();
 
     faceRecon.cropImages(req.body.email, tmpStoragePath);
 
@@ -79,8 +85,6 @@ router.post('/user/new', upload, function (req, res) {
 router.post('/user/predict', upload, function (req, res) {
   const imgsPath = path.resolve(tmpStoragePath);
   const imgFiles = fs.readdirSync(imgsPath);
-
-  let faceRecon = new FaceRecognizer();
 
   imgFiles.forEach(imgPath => {
     faceRecon.predict(path.resolve(imgsPath, imgPath))
