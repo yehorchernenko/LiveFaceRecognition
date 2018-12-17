@@ -66,20 +66,40 @@ router.post('/user/new', upload, function (req, res) {
 
   user.save().then((newUser) => {
     console.log('User created');
-
     faceRecon.cropImages(req.body.email, tmpStoragePath);
-
-
     faceRecon.trainFaceByUser(newUser);
 
-    emptyTmpDir(req.body.email);
-    res.sendStatus(200)
+    emptyTmpDir(req.body.email).then(() => {
+      res.status(200).send('User created')
+    });
 
   }).catch(error => {
-    emptyTmpDir(req.body.email);
-    console.log(`User creation error ${error}`);
+    emptyTmpDir(req.body.email).then(() => {
+      console.log(`User creation error ${error}`);
+      res.status(404).send(`User creation error ${error}`);
+    });
+  });
 
-    res.sendStatus(404)
+});
+
+router.post('/user/update', upload, function (req, res) {
+
+  User.findOne({email: req.body.email}, (err, obj) => {
+    if (err) res.send({message: `User update error: ${err}`}, 404);
+
+    if (obj) {
+      faceRecon.cropImages(obj.email, tmpStoragePath);
+      faceRecon.addFacesFor(obj);
+
+      emptyTmpDir(obj.email).then(() => {
+        res.status(200).send({message: `Added new photo for email: ${req.body.email}`});
+      });
+
+    } else {
+      emptyTmpDir(req.body.email).then(() => {
+        res.status(404).send({message: `User not found for email: ${req.body.email}`});
+      });
+    }
   });
 
 });
@@ -88,16 +108,17 @@ router.post('/user/predict', upload, function (req, res) {
   const imgsPath = path.resolve(tmpStoragePath);
   const imgFiles = fs.readdirSync(imgsPath);
 
-  imgFiles.forEach(imgPath => {
-    faceRecon.predict(path.resolve(imgsPath, imgPath))
+  let json = imgFiles.map(imgPath => {
+    let prediction = faceRecon.predict(path.resolve(imgsPath, imgPath));
+    return { className: prediction.className, distance: prediction.distance }
   });
 
-  emptyTmpDir();
-
-  res.sendStatus(200);
+  emptyTmpDir('jpg').then(() => {
+    res.status(200).json(json);
+  });
 });
 
-function emptyTmpDir(fileName) {
+async function emptyTmpDir(fileName) {
   fs.readdir(tmpStoragePath, (err, files) => {
     files.forEach((file) => {
       if (file.includes(fileName)) {
@@ -105,7 +126,6 @@ function emptyTmpDir(fileName) {
           if (removeErr) { throw  removeErr }
         })
       }
-
     })
   });
 }

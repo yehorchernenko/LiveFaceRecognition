@@ -116,6 +116,20 @@ class TrainRecognizer {
     }
   }
 
+  addFacesFor(user) {
+    const dataPath = path.resolve('./uploads/', user.email);
+    const allFiles = fs.readdirSync(dataPath);
+
+    const recognizer = fr.FaceRecognizer();
+    const modelState = require('../uploads/model.json');
+
+    recognizer.load(modelState);
+
+    let faces = allFiles.map(fp => fr.loadImage(path.resolve(dataPath, fp)));
+    recognizer.addFaces(faces, user.email);
+
+    fs.writeFileSync('./uploads/model.json', JSON.stringify(recognizer.serialize()));
+  }
 }
 
 module.exports = TrainRecognizer;
