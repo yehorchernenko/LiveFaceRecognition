@@ -3,37 +3,16 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { StreamComponent } from './stream/stream.component';
-import { RouterModule, Routes } from '@angular/router';
+import { AppRoutingModule } from './app-routing.module';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MaterialModule } from './shared/material.module';
 import { AlertsModule } from 'angular-alert-module';
 
-import {
-  MatInputModule,
-  MatPaginatorModule,
-  MatProgressSpinnerModule,
-  MatSortModule,
-  MatTableModule,
-  MatIconModule,
-  MatButtonModule,
-  MatCardModule,
-  MatFormFieldModule,
-} from '@angular/material';
-import { NewUserComponent } from './new-user/new-user.component';
 
-const appRoutes: Routes = [
-  {
-    path: 'newuser',
-    component: NewUserComponent,
-    data: { title: 'Add new user' }
-  },
-  {
-    path: 'stream',
-    component: StreamComponent,
-    data: { title: 'Video stream' }
-  },
-  ];
+import { NewUserComponent } from './new-user/new-user.component';
 
 @NgModule({
   declarations: [
@@ -42,22 +21,14 @@ const appRoutes: Routes = [
     NewUserComponent
   ],
   imports: [
-    RouterModule.forRoot(appRoutes),
+    AppRoutingModule,
     AlertsModule.forRoot(),
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    MatInputModule,
-    MatPaginatorModule,
-    MatProgressSpinnerModule,
-    MatSortModule,
-    MatTableModule,
-    MatIconModule,
-    MatButtonModule,
-    MatCardModule,
-    MatFormFieldModule,
+    MaterialModule
   ],
   providers: [],
   bootstrap: [AppComponent]
