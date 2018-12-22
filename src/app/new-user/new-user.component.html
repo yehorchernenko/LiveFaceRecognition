@@ -1,27 +1,27 @@
 <div class="container">
-  <form (ngSubmit)="onSubmit()" #heroForm="ngForm">
-    <div class="form-group">
-      <label for="name">Name</label>
-      <input type="text" class="form-control" id="name" required
+
+  <form (ngSubmit)="onSubmit()">
+    <label class="field" style="text-align: center">Add new user.</label>
+
+    <mat-form-field class="field">
+      <input matInput placeholder="Name" type="text" id="name" required
              [(ngModel)]="model.displayName" name="name">
-    </div>
-
-    <div class="form-group">
-      <label for="email">Email</label>
-      <input type="text" class="form-control" id="email" required
+    </mat-form-field>
+    <mat-form-field class="field">
+      <input matInput placeholder="Email" type="text" id="email" required
              [(ngModel)]="model.email" name="email">
-    </div>
+    </mat-form-field>
 
-    <div class="form-group">
-      <label for="email">Images</label>
-      <input type="file" class="form-control" multiple accept="image/jpeg" id="images"
-              name="images" (change)="onImagesChanged($event)">
+    <div>
+      <label>Images:</label>
+      <input placeholder="Email" type="file" multiple accept="image/jpeg" id="images"
+             name="images" (change)="onImagesChanged($event)">
     </div>
-    <button type="submit" class="btn btn-success" >Submit</button>
-
-  </form>
+    <div class="add-button-container">
+      <button mat-flat-button class="add-button" type="submit">Submit</button>
+    </div>
+    </form>
 </div>
-{{message}}
 <app-alerts></app-alerts>
 {{diagnostic}}
 

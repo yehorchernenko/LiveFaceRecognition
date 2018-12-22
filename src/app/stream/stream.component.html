@@ -1,28 +1,50 @@
+<body>
 <div class="container">
-  <p> {{message}} </p>
-
-  <video id=video_stream class="video-js vjs-default-skin video_canvas" controls>
-    <source
-      src={{streamUrl}}
-      type="application/x-mpegURL">
-  </video>
-
+  <div class="enter">
+    <mat-label class="video-label">Enter camera output:</mat-label>
+    <video id=enter_video_stream class="video-js vjs-default-skin video_canvas" controls>
+      <source
+        src={{enterURL}}
+        type="application/x-mpegURL">
+    </video>
     <mat-form-field class="input-container">
-      <input matInput [(ngModel)]="streamUrl" placeholder="Stream URL">
+      <input matInput [(ngModel)]="enterURL" placeholder="Enter stream URL">
     </mat-form-field>
-    <button mat-flat-button	onclick="play()" (click)="startRecognition()">Go</button>
+  </div>
+
+  <div class="exit">
+    <mat-label class="video-label">Exit camera output:</mat-label>
+    <video id=exit_video_stream class="video-js vjs-default-skin video_canvas" controls>
+      <source
+        src={{exitURL}}
+        type="application/x-mpegURL">
+    </video>
+    <mat-form-field class="input-container">
+      <input matInput [(ngModel)]="exitURL" placeholder="Exit stream URL">
+    </mat-form-field>
+  </div>
 </div>
+<div class="start-button-container">
+  <button mat-flat-button class="start-button" onclick="play()" (click)="startRecognition()">Start recognition</button>
+</div>
+
 
 <script src="video.js"></script>
 <script src="videojs-contrib-hls.min.js"></script>
 <script>
   function play() {
-    var player = videojs('video_stream',{
+    console.log("play")
+    let enterPlayer = videojs('enter_video_stream',{
       autoplay: true
     });
-    player.play();
+    let exitPlayer = videojs('exit_video_stream',{
+      autoplay: true
+    });
+
+    enterPlayer.play();
+    exitPlayer.play();
   }
 
   play()
 </script>
-
+</body>

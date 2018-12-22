@@ -9,7 +9,8 @@ import { Observable } from 'rxjs';
 })
 export class StreamComponent implements OnInit {
   message = 'Waiting...';
-  streamUrl = '';
+  enterURL = '';
+  exitURL = '';
 
   constructor(private api: ApiService) { }
 
@@ -24,7 +25,8 @@ export class StreamComponent implements OnInit {
   }
 
   startRecognition() {
-    this.api.startRecognition(this.streamUrl).subscribe( res => {
+    console.log(this.enterURL + this.exitURL);
+    this.api.startRecognition(this.enterURL).subscribe( res => {
       console.log(res);
       this.message = res.message;
     }, err => {
