@@ -12,6 +12,8 @@ class VisitorChecker {
   constructor(onMessage) {
     this.enterSnapshotPath = 'snapshots/enterSnapshot';
     this.enterCameraURL = null;
+    this.exitSnapshotPath = 'snapshots/exitSnapshot';
+    this.exitCameraURL = null;
 
     this.enterSnapshoter = setInterval(() => {
       if (this.enterCameraURL != null && this.enterCameraURL !== '') {
@@ -30,7 +32,29 @@ class VisitorChecker {
           })
 
         } catch (err) {
-          console.log(`Error occured on enter snapshot ${err}`);
+          console.log(`Error occurred on enter snapshot ${err}`);
+        }
+      }
+    }, 5000);
+
+    this.exitSnapshoter = setInterval(() => {
+      if (this.exitCameraURL != null && this.exitCameraURL !== '') {
+        try {
+          let imagePath = path.resolve(this.exitSnapshotPath,`${(new Date()).getMilliseconds()}.jpg`);
+
+          exec(`ffmpeg -i ${this.exitCameraURL} -vframes 1 ${imagePath}`, 2500);
+
+          let prediction = faceRecon.predict(imagePath);
+          if (prediction) {
+            this.defineVisitorFor(prediction.className, false, onMessage);
+          }
+
+          fs.unlink(imagePath, (err) => {
+            if (err) { console.log(err); }
+          })
+
+        } catch (err) {
+          console.log(`Error occurred on exit snapshot ${err}`);
         }
       }
     }, 5000);
@@ -59,7 +83,7 @@ class VisitorChecker {
                 } else {
                   // console.log(`User ${visitor.user.displayName} entered office at ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`)
                   // console.log(`Present time ${visitor.presentTime / 1000 | 0}`)
-                  cb(`User ${visitor.user.displayName} entered office at ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}\n Present time ${visitor.presentTime / 1000 | 0}`);
+                  cb(`User ${visitor.user.displayName} entered office at ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()} Present time ${visitor.presentTime / 1000 | 0}`);
                 }
               });
 
@@ -78,7 +102,7 @@ class VisitorChecker {
                 } else {
                   // console.log(`User ${visitor.user.displayName} exit office at ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`)
                   // console.log(`Present time ${(presentTime + visitor.presentTime) / 1000 | 0}`)
-                  cb(`User ${visitor.user.displayName} exit office at ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}\n Present time ${(presentTime + visitor.presentTime) / 1000 | 0}`);
+                  cb(`User ${visitor.user.displayName} exit office at ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()} Present time ${(presentTime + visitor.presentTime) / 1000 | 0}`);
                 }
               });
 

@@ -38,6 +38,7 @@ router.get('/', function(req, res, next) {
 
 router.post('/startRecognition', function (req, res) {
   visitorChecker.enterCameraURL = req.body.enterCameraUrl;
+  visitorChecker.exitCameraURL = req.body.exitCameraURL;
 
   res.send({"message": "Recognition started"});
 });

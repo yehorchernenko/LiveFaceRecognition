@@ -26,7 +26,7 @@ export class StreamComponent implements OnInit {
 
   startRecognition() {
     console.log(this.enterURL + this.exitURL);
-    this.api.startRecognition(this.enterURL).subscribe( res => {
+    this.api.startRecognition(this.enterURL, this.exitURL).subscribe( res => {
       console.log(res);
       this.message = res.message;
     }, err => {

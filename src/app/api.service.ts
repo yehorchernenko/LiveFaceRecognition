@@ -44,9 +44,10 @@ export class ApiService {
       catchError(this.handleError));
   }
 
-  startRecognition(url: string): Observable<any> {
+  startRecognition(enterCameraUrl: string, exitCameraURL: string): Observable<any> {
     const data = {
-      'enterCameraUrl': url
+      'enterCameraUrl': enterCameraUrl,
+      'exitCameraURL': exitCameraURL
     };
     return this.http.post(startRecognitionUrl, data, httpOptions)
       .pipe(
