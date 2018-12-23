@@ -6,6 +6,7 @@ const enterSnapshotPath = 'snapshots/enterSnapshot';
 const fs = require('fs');
 const path = require('path');
 const User = require('../entities/User');
+const Visitor = require('../entities/Visitor');
 const _ = require('lodash');
 let faceRecon = new FaceRecognizer();
 let exec = require('sync-exec');
@@ -104,19 +105,105 @@ router.post('/user/update', upload, function (req, res) {
 
 });
 
-router.post('/user/predict', upload, function (req, res) {
+router.post('/user/predict/enter', upload, function (req, res) {
   const imgsPath = path.resolve(tmpStoragePath);
   const imgFiles = fs.readdirSync(imgsPath);
 
-  let json = imgFiles.map(imgPath => {
+  imgFiles.map(imgPath => {
     let prediction = faceRecon.predict(path.resolve(imgsPath, imgPath));
-    return { className: prediction.className, distance: prediction.distance }
-  });
 
-  emptyTmpDir('jpg').then(() => {
-    res.status(200).json(json);
+    if (prediction.distance < 0.6) {
+      console.log(prediction);
+      defineVisitorFor(prediction.className, true);
+
+      emptyTmpDir('jpg').then(() => {
+        res.status(200).send(prediction);
+      });
+    }
   });
 });
+
+router.post('/user/predict/exit', upload, function (req, res) {
+  const imgsPath = path.resolve(tmpStoragePath);
+  const imgFiles = fs.readdirSync(imgsPath);
+
+  imgFiles.map(imgPath => {
+    let prediction = faceRecon.predict(path.resolve(imgsPath, imgPath));
+
+    if (prediction.distance < 0.6) {
+      console.log(prediction);
+      defineVisitorFor(prediction.className, false);
+
+      emptyTmpDir('jpg').then(() => {
+        res.status(200).send(prediction);
+      });
+    }
+  });
+});
+
+function defineVisitorFor(email, isEnter) {
+  User.findOne({email: email}, (err, user) => {
+    if (!err && user) {
+      Visitor.findOne({'user.email': user.email}, (err, visitor) => {
+        if (err) {
+          console.log(`Fetching visitors error: ${err}`)
+
+        } else if (visitor) {
+          console.log(isEnter + ' ' + visitor.isPresent);
+
+          if (isEnter && !visitor.isPresent) {
+            let now = new Date();
+
+            Visitor.findOneAndUpdate({'user.email': user.email}, {$set: {
+                isPresent: true,
+                visitedAt: now
+            }}, (err) => {
+              if (err) {
+                console.log(`Error when updating visitor on enter ${err}`)
+              } else {
+                console.log(`User ${visitor.user.displayName} entered office at ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`)
+                console.log(`Present time ${visitor.presentTime / 1000 | 0}`)
+              }
+            });
+
+          } else if (!isEnter && visitor.isPresent){
+            let now = new Date();
+            let presentTime = now - visitor.visitedAt;
+
+            Visitor.findOneAndUpdate({'user.email': user.email}, {$set: {
+                isPresent: false,
+                presentTime: presentTime + visitor.presentTime
+              }}, (err) => {
+              if (err) {
+                console.log(`Error when updating visitor on enter ${err}`)
+              } else {
+                console.log(`User ${visitor.user.displayName} exit office at ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`)
+                console.log(`Present time ${(presentTime + visitor.presentTime) / 1000 | 0}`)
+              }
+            });
+
+          } else {
+            console.log(`User ${user.displayName} is cheating`);
+          }
+
+
+        } else {
+          let newVisitor = new Visitor({
+            user: {
+              _id: user._id,
+              email: user.email,
+              displayName: user.displayName
+            }
+          });
+          newVisitor.save().then( vistor => {
+            console.log(`Welcome ${vistor.user.displayName}`)
+          }).catch(err => { if (err) console.log(`Error during register new visitor ${err}`) })
+        }
+      });
+    }
+  });
+
+}
 
 async function emptyTmpDir(fileName) {
   fs.readdir(tmpStoragePath, (err, files) => {
