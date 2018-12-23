@@ -11,10 +11,6 @@ const apiUrl = '/api';
 const startRecognitionUrl = '/api/startRecognition';
 const newUserURL = '/api/user/new';
 
-const httpUploadOptions = {
-  headers: new HttpHeaders({ "Content-Type": "multipart/form-data" })
-};
-
 @Injectable({
   providedIn: 'root'
 })
@@ -62,10 +58,9 @@ export class ApiService {
     const uploadData = new FormData();
     uploadData.append('displayName', user.displayName);
     uploadData.append('email', user.email);
-    // TODO: - Add images uploading
-    // uploadData.append('images', user.images[0], user.images[0].name);
+    uploadData.append('images', user.images[0]);
 
-    return this.http.post(newUserURL, uploadData, httpUploadOptions).pipe(
+    return this.http.post(newUserURL, uploadData).pipe(
       catchError(this.handleError)
     );
   }
