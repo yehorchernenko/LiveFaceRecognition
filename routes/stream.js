@@ -2,15 +2,18 @@ const express = require('express');
 const router = express.Router();
 const cmd = require('node-cmd');
 const FaceRecognizer = require('../models/FaceRecognizer');
+const VisitorChecker = require('../models/VisitorChecker');
 const enterSnapshotPath = 'snapshots/enterSnapshot';
 const fs = require('fs');
 const path = require('path');
 const User = require('../entities/User');
 const Visitor = require('../entities/Visitor');
 const _ = require('lodash');
-let faceRecon = new FaceRecognizer();
-let exec = require('sync-exec');
 
+let faceRecon = new FaceRecognizer();
+let visitorChecker = new VisitorChecker((message) => {
+  console.log(message);
+});
 
 const tmpStoragePath = 'tmp/uploads/';
 
@@ -28,34 +31,13 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage }).array('images');
 
-
-var enterCameraUrl = null;
-
-setInterval(() => {
-  if (enterCameraUrl != null) {
-    try {
-      let imagePath = path.resolve(enterSnapshotPath,`${(new Date()).getMilliseconds()}.jpg`);
-
-      exec(`ffmpeg -i ${enterCameraUrl} -vframes 1 ${imagePath}`, 2500);
-      faceRecon.predict(imagePath);
-
-      fs.unlink(imagePath, (err) => {
-        if (err) { console.log(err); }
-      })
-
-    } catch (err) {
-      console.log(err);
-    }
-  }
-}, 5000);
-
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.status(200);
 });
 
 router.post('/startRecognition', function (req, res) {
-  enterCameraUrl = req.body.enterCameraUrl;
+  visitorChecker.enterCameraURL = req.body.enterCameraUrl;
 
   res.send({"message": "Recognition started"});
 });
@@ -140,70 +122,6 @@ router.post('/user/predict/exit', upload, function (req, res) {
     }
   });
 });
-
-function defineVisitorFor(email, isEnter) {
-  User.findOne({email: email}, (err, user) => {
-    if (!err && user) {
-      Visitor.findOne({'user.email': user.email}, (err, visitor) => {
-        if (err) {
-          console.log(`Fetching visitors error: ${err}`)
-
-        } else if (visitor) {
-          console.log(isEnter + ' ' + visitor.isPresent);
-
-          if (isEnter && !visitor.isPresent) {
-            let now = new Date();
-
-            Visitor.findOneAndUpdate({'user.email': user.email}, {$set: {
-                isPresent: true,
-                visitedAt: now
-            }}, (err) => {
-              if (err) {
-                console.log(`Error when updating visitor on enter ${err}`)
-              } else {
-                console.log(`User ${visitor.user.displayName} entered office at ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`)
-                console.log(`Present time ${visitor.presentTime / 1000 | 0}`)
-              }
-            });
-
-          } else if (!isEnter && visitor.isPresent){
-            let now = new Date();
-            let presentTime = now - visitor.visitedAt;
-
-            Visitor.findOneAndUpdate({'user.email': user.email}, {$set: {
-                isPresent: false,
-                presentTime: presentTime + visitor.presentTime
-              }}, (err) => {
-              if (err) {
-                console.log(`Error when updating visitor on enter ${err}`)
-              } else {
-                console.log(`User ${visitor.user.displayName} exit office at ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`)
-                console.log(`Present time ${(presentTime + visitor.presentTime) / 1000 | 0}`)
-              }
-            });
-
-          } else {
-            console.log(`User ${user.displayName} is cheating`);
-          }
-
-
-        } else {
-          let newVisitor = new Visitor({
-            user: {
-              _id: user._id,
-              email: user.email,
-              displayName: user.displayName
-            }
-          });
-          newVisitor.save().then( vistor => {
-            console.log(`Welcome ${vistor.user.displayName}`)
-          }).catch(err => { if (err) console.log(`Error during register new visitor ${err}`) })
-        }
-      });
-    }
-  });
-
-}
 
 async function emptyTmpDir(fileName) {
   fs.readdir(tmpStoragePath, (err, files) => {

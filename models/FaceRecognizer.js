@@ -89,7 +89,6 @@ class TrainRecognizer {
   }
 
   predict(imgPath) {
-    console.log(imgPath);
     let image = this.getFaceImage(cv.imread(imgPath).bgrToGray())
 
     if (image) {
@@ -110,10 +109,12 @@ class TrainRecognizer {
         recognizer.addFaces([croppedImage], prediction.className);
 
         fs.writeFileSync('./uploads/model.json', JSON.stringify(recognizer.serialize()));
+        return prediction;
       }
-
-      return prediction;
+      return null;
     }
+
+    return null;
   }
 
   addFacesFor(user) {
