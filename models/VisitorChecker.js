@@ -22,8 +22,7 @@ class VisitorChecker {
 
           let prediction = faceRecon.predict(imagePath);
           if (prediction) {
-            let message = this.defineVisitorFor(prediction.className, true);
-            if (message) onMessage(message);
+            this.defineVisitorFor(prediction.className, true, onMessage);
           }
 
           fs.unlink(imagePath, (err) => {
@@ -37,13 +36,13 @@ class VisitorChecker {
     }, 5000);
   }
 
-  defineVisitorFor(email, isEnter) {
+  defineVisitorFor(email, isEnter, cb) {
     User.findOne({email: email}, (err, user) => {
       if (!err && user) {
         Visitor.findOne({'user.email': user.email}, (err, visitor) => {
           if (err) {
             console.log(`Fetching visitors error: ${err}`);
-            return null
+            cb(null);
           } else if (visitor) {
 
             if (isEnter && !visitor.isPresent) {
@@ -55,12 +54,12 @@ class VisitorChecker {
                 }}, (err) => {
                 if (err) {
                   console.log(`Error when updating visitor on enter ${err}`);
-                  return null;
+                  cb(null);
 
                 } else {
                   // console.log(`User ${visitor.user.displayName} entered office at ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`)
                   // console.log(`Present time ${visitor.presentTime / 1000 | 0}`)
-                  return `User ${visitor.user.displayName} entered office at ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}\n Present time ${visitor.presentTime / 1000 | 0}`;
+                  cb(`User ${visitor.user.displayName} entered office at ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}\n Present time ${visitor.presentTime / 1000 | 0}`);
                 }
               });
 
@@ -74,18 +73,17 @@ class VisitorChecker {
                 }}, (err) => {
                 if (err) {
                   console.log(`Error when updating visitor on enter ${err}`);
-                  return null;
+                  cb(null)
 
                 } else {
                   // console.log(`User ${visitor.user.displayName} exit office at ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`)
                   // console.log(`Present time ${(presentTime + visitor.presentTime) / 1000 | 0}`)
-                  return `User ${visitor.user.displayName} exit office at ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}\n Present time ${(presentTime + visitor.presentTime) / 1000 | 0}`;
+                  cb(`User ${visitor.user.displayName} exit office at ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}\n Present time ${(presentTime + visitor.presentTime) / 1000 | 0}`);
                 }
               });
 
             } else {
-              console.log(`User ${user.displayName} is cheating`);
-              return null
+              cb(`User ${user.displayName} is cheating`);
             }
 
 
@@ -99,11 +97,11 @@ class VisitorChecker {
             });
             newVisitor.save().then( vistor => {
               //console.log(`Welcome ${vistor.user.displayName}`)
-              return `Welcome ${vistor.user.displayName}`;
+              cb(`Welcome ${vistor.user.displayName}`);
             }).catch(err => {
               if (err) {
                 console.log(`Error during register new visitor ${err}`);
-                return null
+                cb(null);
               }
             })
           }

@@ -95,8 +95,9 @@ router.post('/user/predict/enter', upload, function (req, res) {
     let prediction = faceRecon.predict(path.resolve(imgsPath, imgPath));
 
     if (prediction.distance < 0.6) {
-      console.log(prediction);
-      defineVisitorFor(prediction.className, true);
+      visitorChecker.defineVisitorFor(prediction.className, true, (message) => {
+        console.log(message)
+      });
 
       emptyTmpDir('jpg').then(() => {
         res.status(200).send(prediction);
@@ -113,8 +114,9 @@ router.post('/user/predict/exit', upload, function (req, res) {
     let prediction = faceRecon.predict(path.resolve(imgsPath, imgPath));
 
     if (prediction.distance < 0.6) {
-      console.log(prediction);
-      defineVisitorFor(prediction.className, false);
+      visitorChecker.defineVisitorFor(prediction.className, false, (message) => {
+        console.log(message)
+      });
 
       emptyTmpDir('jpg').then(() => {
         res.status(200).send(prediction);
