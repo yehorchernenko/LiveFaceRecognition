@@ -11,12 +11,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './shared/material.module';
 import { AlertsModule } from 'angular-alert-module';
+import { VisitorListComponent } from './visitor-list/visitor-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     StreamComponent,
-    NewUserComponent
+    NewUserComponent,
+    VisitorListComponent
   ],
   imports: [
     AppRoutingModule,

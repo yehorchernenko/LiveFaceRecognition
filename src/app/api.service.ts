@@ -10,6 +10,7 @@ const httpOptions = {
 const apiUrl = '/api';
 const startRecognitionUrl = '/api/startRecognition';
 const newUserURL = '/api/user/new';
+const visitorListURL = '/api/visitor/list';
 
 @Injectable({
   providedIn: 'root'
@@ -64,6 +65,12 @@ export class ApiService {
     return this.http.post(newUserURL, uploadData).pipe(
       catchError(this.handleError)
     );
+  }
+
+  getVisitorList(): Observable<any> {
+    return this.http.get(visitorListURL).pipe(
+      catchError(this.handleError)
+    )
   }
 
 }

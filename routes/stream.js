@@ -95,13 +95,18 @@ router.post('/user/predict/enter', upload, function (req, res) {
   imgFiles.map(imgPath => {
     let prediction = faceRecon.predict(path.resolve(imgsPath, imgPath));
 
-    if (prediction.distance < 0.6) {
+    if (prediction && prediction.distance < 0.6) {
       visitorChecker.defineVisitorFor(prediction.className, true, (message) => {
         console.log(message)
       });
 
       emptyTmpDir('jpg').then(() => {
         res.status(200).send(prediction);
+      });
+
+    } else {
+      emptyTmpDir('jpg').then(() => {
+        res.status(404).json({message: "User not recognized"});
       });
     }
   });
@@ -114,7 +119,7 @@ router.post('/user/predict/exit', upload, function (req, res) {
   imgFiles.map(imgPath => {
     let prediction = faceRecon.predict(path.resolve(imgsPath, imgPath));
 
-    if (prediction.distance < 0.6) {
+    if (prediction && prediction.distance < 0.6) {
       visitorChecker.defineVisitorFor(prediction.className, false, (message) => {
         console.log(message)
       });
@@ -122,7 +127,18 @@ router.post('/user/predict/exit', upload, function (req, res) {
       emptyTmpDir('jpg').then(() => {
         res.status(200).send(prediction);
       });
+    } else {
+      emptyTmpDir('jpg').then(() => {
+        res.status(404).json({message: "User not recognized"});
+      });
     }
+  });
+});
+
+router.get('/visitor/list', function (req, res) {
+  Visitor.find({}, (err, visitors) => {
+
+    res.status(200).json(visitors.map((visitor) => visitor.toJSON()))
   });
 });
 

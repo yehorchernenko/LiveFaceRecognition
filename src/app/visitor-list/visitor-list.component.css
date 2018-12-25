@@ -1,0 +1,26 @@
+.column {
+  float: left;
+  width: 20%;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.color-red {
+  color: red;
+}
+
+.color-green {
+  color: lawngreen;
+}
+
+.isPresent-item {
+  font-size: 46px;
+  text-align: center;
+
+}
+
+

@@ -1,0 +1,16 @@
+<h4 style="text-align: center">User information:</h4>
+<mat-list>
+  <mat-list-item *ngFor="let visitor of visitorList">
+    <div class="row" mat-line="">
+      <div class="column"><p>Name: {{visitor.name}}</p></div>
+      <div class="column"><p>Email: {{visitor.email}}</p></div>
+      <div class="column"><p>Total worked: {{visitor.formattedTotalTime}}</p></div>
+      <div class="column"><p>Last enter: {{visitor.formattedLastVisit}}</p></div>
+      <div class="column">
+        <div class="column"><p>Is present:</p></div>
+        <div style="display: inline; float: right"><span class="isPresent-item" ngClass="{{visitor.isPresent ? 'color-green' : 'color-red'}}">&#8226;</span></div>
+      </div>
+    </div>
+    <mat-divider></mat-divider>
+  </mat-list-item>
+</mat-list>

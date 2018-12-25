@@ -89,7 +89,7 @@ class TrainRecognizer {
   }
 
   predict(imgPath) {
-    let image = this.getFaceImage(cv.imread(imgPath).bgrToGray())
+    let image = this.getFaceImage(cv.imread(imgPath).bgrToGray());
 
     if (image) {
       cv.imwrite(imgPath, image.resize(150,150));
@@ -110,8 +110,9 @@ class TrainRecognizer {
 
         fs.writeFileSync('./uploads/model.json', JSON.stringify(recognizer.serialize()));
         return prediction;
+      } else {
+        return null;
       }
-      return null;
     }
 
     return null;
