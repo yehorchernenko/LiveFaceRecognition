@@ -19,6 +19,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'dist/stream')));
 app.use('/', express.static(path.join(__dirname, 'dist/stream')));
 app.use('/api', apiRouter);
+app.use('*', (req, res, next) => {
+  res.sendFile(path.join(__dirname, './dist/stream/index.html'));
+});
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
