@@ -9,11 +9,14 @@ const path = require('path');
 const User = require('../entities/User');
 const Visitor = require('../entities/Visitor');
 const _ = require('lodash');
+const EmailService = require('../models/EmailService');
+const generator = require('generate-password');
 
 let faceRecon = new FaceRecognizer();
 let visitorChecker = new VisitorChecker((message) => {
   console.log(message);
 });
+let emailService = new EmailService();
 
 const tmpStoragePath = 'tmp/uploads/';
 
@@ -44,12 +47,18 @@ router.post('/startRecognition', function (req, res) {
 });
 
 router.post('/user/new', upload, function (req, res) {
+  const password = generator.generate({
+    length: 6,
+    numbers: true
+  });
 
-  let body = _.pick(req.body, ['displayName','email']);
-  let user = new User(body);
+  let user = new User({displayName: req.body.displayName, email: req.body.email, password: password});
 
   user.save().then((newUser) => {
     console.log('User created');
+
+    emailService.sendPassword(newUser.email, password);
+
     faceRecon.cropImages(req.body.email, tmpStoragePath);
     faceRecon.trainFaceByUser(newUser);
 
