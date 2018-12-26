@@ -75,6 +75,18 @@ router.post('/user/new', upload, function (req, res) {
 
 });
 
+router.post('/user/login', function (req, res) {
+  User.findOne({email: req.body.email, password: req.body.pass}).then( user => {
+      if (user) {
+        res.status(200).json({message: 'Logged successfully'})
+      } else {
+        res.status(404).json({message: 'Invalid credentials'})
+      }
+  }).catch(err => {
+      if (err) res.status(404).json({message: err});
+  })
+});
+
 router.post('/user/update', upload, function (req, res) {
 
   User.findOne({email: req.body.email}, (err, obj) => {

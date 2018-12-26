@@ -1,0 +1,27 @@
+.container {
+  margin: auto;
+  width: 30%;
+  padding-top: 20px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+}
+
+.field > * {
+  padding: 3%;
+  min-width: 94%;
+}
+
+.login-button-container {
+  margin: auto;
+  width: 30%;
+  padding-top: 20px;
+}
+
+.login-button {
+  background-color: lightsteelblue;
+  min-width: 100%;
+}
+

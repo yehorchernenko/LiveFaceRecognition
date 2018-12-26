@@ -1,4 +1,12 @@
 <body>
+<mat-toolbar>
+  <mat-toolbar-row>
+    <a mat-button [routerLink]="['/admin']">Home</a>
+    <a mat-button [routerLink]="['/admin/stream']">Stream</a>
+    <a mat-button [routerLink]="['/admin/user/new']">Add new user</a>
+  </mat-toolbar-row>
+</mat-toolbar>
+
 <div class="container">
   <div class="enter">
     <mat-label class="video-label">Enter camera output:</mat-label>

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { catchError, tap, map } from 'rxjs/operators';
 import { User } from './user';
 
@@ -11,7 +11,7 @@ const apiUrl = '/api';
 const startRecognitionUrl = '/api/startRecognition';
 const newUserURL = '/api/user/new';
 const visitorListURL = '/api/visitor/list';
-
+const userLoginURL = 'api/user/login';
 @Injectable({
   providedIn: 'root'
 })
@@ -70,7 +70,12 @@ export class ApiService {
   getVisitorList(): Observable<any> {
     return this.http.get(visitorListURL).pipe(
       catchError(this.handleError)
-    )
+    );
+  }
+
+  userLogin(email: string, pass: string): Observable<any> {
+    const body = { email: email, pass: pass };
+    return this.http.post(userLoginURL, body, {observe: 'response'});
   }
 
 }

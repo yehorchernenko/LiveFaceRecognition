@@ -1,0 +1,22 @@
+<div class="container">
+
+  <form (ngSubmit)="onSubmit()">
+    <label class="field" style="text-align: center">Login:</label>
+
+    <mat-form-field class="field">
+      <input matInput placeholder="Email" type="email" id="email" required
+             [(ngModel)]="email" name="email">
+    </mat-form-field>
+    <mat-form-field class="field">
+      <input matInput placeholder="Password" type="password" id="password" required
+             [(ngModel)]="password" name="password">
+    </mat-form-field>
+
+    <div class="login-button-container">
+      <button mat-flat-button class="login-button" type="submit">Submit</button>
+    </div>
+  </form>
+</div>
+<app-alerts></app-alerts>
+{{diagnostic}}
+

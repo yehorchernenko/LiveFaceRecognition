@@ -12,13 +12,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './shared/material.module';
 import { AlertsModule } from 'angular-alert-module';
 import { VisitorListComponent } from './visitor-list/visitor-list.component';
+import { UserLoginComponent } from './user-login/user-login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     StreamComponent,
     NewUserComponent,
-    VisitorListComponent
+    VisitorListComponent,
+    UserLoginComponent
   ],
   imports: [
     AppRoutingModule,
