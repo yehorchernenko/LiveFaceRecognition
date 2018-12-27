@@ -4,11 +4,18 @@ import { StreamComponent} from './stream/stream.component';
 import { NewUserComponent} from './new-user/new-user.component';
 import { VisitorListComponent } from './visitor-list/visitor-list.component';
 import { UserLoginComponent } from './user-login/user-login.component';
+import {UserProfileComponent} from './user-profile/user-profile.component';
+
 
 const routes: Routes = [
   {
     path: '',
     component: UserLoginComponent,
+    data: { title: 'User login'}
+  },
+  {
+    path: 'profile',
+    component: UserProfileComponent,
     data: { title: 'User login'}
   },
   {

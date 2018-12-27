@@ -21,7 +21,7 @@ export class UserLoginComponent implements OnInit {
 
         this.api.userLogin(userObj.email, userObj.password).subscribe(response => {
           if (response.status === 200) {
-            this.router.navigate(['/admin']);
+            this.router.navigate(['/profile']);
           }
         }, error => {
           console.log(`Error ${error}`);
@@ -39,7 +39,7 @@ export class UserLoginComponent implements OnInit {
       console.log(response);
       if (response.status === 200) {
         this.localStorage.setItem('user', JSON.stringify({email: this.email, password: this.password})).subscribe(() => {});
-        this.router.navigate(['/admin']);
+        this.router.navigate(['/profile']);
       }
 
     }, error => {

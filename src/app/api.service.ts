@@ -12,6 +12,8 @@ const startRecognitionUrl = '/api/startRecognition';
 const newUserURL = '/api/user/new';
 const visitorListURL = '/api/visitor/list';
 const userLoginURL = 'api/user/login';
+const userProfileURL = 'api/user/profile';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -78,4 +80,8 @@ export class ApiService {
     return this.http.post(userLoginURL, body, {observe: 'response'});
   }
 
+  userProfile(email: string, pass: string): Observable<any> {
+    const body = { email: email, pass: pass };
+    return this.http.post(userProfileURL, body, {observe: 'response'});
+  }
 }

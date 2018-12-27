@@ -1,14 +1,6 @@
-<mat-toolbar>
-  <mat-toolbar-row>
-    <a mat-button [routerLink]="['/admin']">Home</a>
-    <a mat-button [routerLink]="['/admin/stream']">Stream</a>
-    <a mat-button [routerLink]="['/admin/user/new']">Add new user</a>
-  </mat-toolbar-row>
-</mat-toolbar>
-
-<h4 style="text-align: center">Users information:</h4>
+<h4 style="text-align: center">User information:</h4>
 <mat-list>
-  <mat-list-item *ngFor="let visitor of visitorList">
+  <mat-list-item>
     <div class="row" mat-line="">
       <div class="column"><p>Name: {{visitor.name}}</p></div>
       <div class="column"><p>Email: {{visitor.email}}</p></div>
@@ -22,3 +14,4 @@
     <mat-divider></mat-divider>
   </mat-list-item>
 </mat-list>
+<button mat-button (click)="logout()" style="background-color: lightsteelblue;">Logout</button>

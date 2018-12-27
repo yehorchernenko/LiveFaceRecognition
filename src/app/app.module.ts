@@ -13,6 +13,7 @@ import { MaterialModule } from './shared/material.module';
 import { AlertsModule } from 'angular-alert-module';
 import { VisitorListComponent } from './visitor-list/visitor-list.component';
 import { UserLoginComponent } from './user-login/user-login.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { UserLoginComponent } from './user-login/user-login.component';
     StreamComponent,
     NewUserComponent,
     VisitorListComponent,
-    UserLoginComponent
+    UserLoginComponent,
+    UserProfileComponent
   ],
   imports: [
     AppRoutingModule,

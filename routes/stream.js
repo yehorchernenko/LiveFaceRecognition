@@ -87,6 +87,23 @@ router.post('/user/login', function (req, res) {
   })
 });
 
+router.post('/user/profile', function (req, res) {
+  User.findOne({email: req.body.email, password: req.body.pass}).then( user => {
+    if (user) {
+      Visitor.findOne({'user.email': user.email}).then(visitor => {
+        res.status(200).json(visitor.toJSON());
+      }).catch(() => {
+        res.status(200).json({user: {displayName: user.displayName, email: user.email, message: 'Visitor info does not exist'}});
+      })
+
+    } else {
+      res.status(404).json({message: 'Invalid credentials'})
+    }
+  }).catch(err => {
+    if (err) res.status(404).json({message: err});
+  })
+});
+
 router.post('/user/update', upload, function (req, res) {
 
   User.findOne({email: req.body.email}, (err, obj) => {
