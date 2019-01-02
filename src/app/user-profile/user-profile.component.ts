@@ -29,13 +29,16 @@ export class UserProfileComponent implements OnInit {
             visitor.lastVisit, `${lastVisit.getDate()}-${lastVisit.getMonth()}-${lastVisit.getFullYear()} ${lastVisit.getHours()}:${lastVisit.getMinutes()}`);
         }, error => {
           console.log(`Error ${error}`);
+          this.router.navigate(['/']);
         });
 
       } else {
         console.log(`Local storage error user is null`);
+        this.router.navigate(['/']);
       }
     }, error => {
       console.log(`Local storage error ${error}`);
+      this.router.navigate(['/']);
     });
   }
 

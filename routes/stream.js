@@ -11,6 +11,7 @@ const Visitor = require('../entities/Visitor');
 const _ = require('lodash');
 const EmailService = require('../models/EmailService');
 const generator = require('generate-password');
+require('dotenv').config();
 
 let faceRecon = new FaceRecognizer();
 let visitorChecker = new VisitorChecker((message) => {
@@ -178,6 +179,14 @@ router.get('/visitor/list', function (req, res) {
 
     res.status(200).json(visitors.map((visitor) => visitor.toJSON()))
   });
+});
+
+router.post('/admin/login', function (req, res) {
+  if (req.body.login === process.env.ADMIN_LOGIN && req.body.pass === process.env.ADMIN_PASS) {
+    res.status(200).send({message: 'Admin successfully logged in'});
+  } else {
+    res.status(404).send({message: 'Incorrect password'});
+  }
 });
 
 async function emptyTmpDir(fileName) {

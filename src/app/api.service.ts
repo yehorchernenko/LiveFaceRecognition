@@ -11,8 +11,9 @@ const apiUrl = '/api';
 const startRecognitionUrl = '/api/startRecognition';
 const newUserURL = '/api/user/new';
 const visitorListURL = '/api/visitor/list';
-const userLoginURL = 'api/user/login';
-const userProfileURL = 'api/user/profile';
+const userLoginURL = '/api/user/login';
+const userProfileURL = '/api/user/profile';
+const adminLoginURL = '/api/admin/login';
 
 @Injectable({
   providedIn: 'root'
@@ -64,9 +65,7 @@ export class ApiService {
     uploadData.append('email', user.email);
     uploadData.append('images', user.images[0]);
 
-    return this.http.post(newUserURL, uploadData).pipe(
-      catchError(this.handleError)
-    );
+    return this.http.post(newUserURL, uploadData, {observe: 'response'});
   }
 
   getVisitorList(): Observable<any> {
@@ -83,5 +82,10 @@ export class ApiService {
   userProfile(email: string, pass: string): Observable<any> {
     const body = { email: email, pass: pass };
     return this.http.post(userProfileURL, body, {observe: 'response'});
+  }
+
+  adminLogin(login: string, pass: string): Observable<any> {
+    const body = { login: login, pass: pass };
+    return this.http.post(adminLoginURL, body, {observe: 'response'});
   }
 }

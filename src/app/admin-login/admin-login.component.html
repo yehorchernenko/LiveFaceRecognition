@@ -1,11 +1,11 @@
 <div class="container">
 
   <form (ngSubmit)="onSubmit()">
-    <label class="field" style="text-align: center">Login:</label>
+    <label class="field" style="text-align: center">Login as admin:</label>
 
     <mat-form-field class="field">
-      <input matInput placeholder="Email" type="email" id="email" required
-             [(ngModel)]="email" name="email">
+      <input matInput placeholder="Login" type="text" id="login" required
+             [(ngModel)]="login" name="login">
     </mat-form-field>
     <mat-form-field class="field">
       <input matInput placeholder="Password" type="password" id="password" required

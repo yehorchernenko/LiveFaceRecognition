@@ -4,8 +4,8 @@ import { StreamComponent} from './stream/stream.component';
 import { NewUserComponent} from './new-user/new-user.component';
 import { VisitorListComponent } from './visitor-list/visitor-list.component';
 import { UserLoginComponent } from './user-login/user-login.component';
-import {UserProfileComponent} from './user-profile/user-profile.component';
-
+import { UserProfileComponent } from './user-profile/user-profile.component';
+import { AdminLoginComponent } from './admin-login/admin-login.component';
 
 const routes: Routes = [
   {
@@ -21,6 +21,11 @@ const routes: Routes = [
   {
     path: 'admin',
     component: VisitorListComponent,
+    data: { title: 'Stream information.'}
+  },
+  {
+    path: 'admin/login',
+    component: AdminLoginComponent,
     data: { title: 'Stream information.'}
   },
   {

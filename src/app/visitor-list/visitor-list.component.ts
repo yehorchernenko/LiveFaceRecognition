@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../api.service';
 import {Visitor} from '../visitor';
+import {LocalStorage} from '@ngx-pwa/local-storage';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-visitor-list',
@@ -10,9 +12,19 @@ import {Visitor} from '../visitor';
 export class VisitorListComponent implements OnInit {
 
   visitorList = [Visitor];
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService, protected localStorage: LocalStorage, private router: Router) { }
 
   ngOnInit() {
+    this.localStorage.getItem('admin').subscribe((admin: string) => {
+      if (!admin) {
+        console.log(`Local storage error user is null`);
+        this.router.navigate(['/admin/login']);
+      }
+    }, error => {
+      console.log(`Local storage error ${error}`);
+      this.router.navigate(['/admin/login']);
+    });
+
     this.apiService.getVisitorList().subscribe(visitors => {
       this.visitorList = visitors.map(visitor => {
         const lastVisit = new Date(visitor.lastVisit);
@@ -35,4 +47,9 @@ export class VisitorListComponent implements OnInit {
     return h + ':' + m;
   }
 
+  logout() {
+    this.localStorage.removeItem('admin').subscribe(() => {
+      this.router.navigate(['/admin/login']);
+    });
+  }
 }

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../api.service';
 import { Observable } from 'rxjs';
+import {LocalStorage} from '@ngx-pwa/local-storage';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-stream',
@@ -12,9 +14,18 @@ export class StreamComponent implements OnInit {
   enterURL = '';
   exitURL = '';
 
-  constructor(private api: ApiService) { }
+  constructor(private api: ApiService, protected localStorage: LocalStorage, private router: Router) { }
 
   ngOnInit() {
+    this.localStorage.getItem('admin').subscribe((admin: string) => {
+      if (!admin) {
+        console.log(`Local storage error user is null`);
+        this.router.navigate(['/admin/login']);
+      }
+    }, error => {
+      console.log(`Local storage error ${error}`);
+      this.router.navigate(['/admin/login']);
+    });
     this.api.checkApi()
       .subscribe(res => {
         console.log(res);
@@ -34,4 +45,9 @@ export class StreamComponent implements OnInit {
     });
   }
 
+  logout() {
+    this.localStorage.removeItem('admin').subscribe(() => {
+      this.router.navigate(['/admin/login']);
+    });
+  }
 }

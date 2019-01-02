@@ -14,6 +14,7 @@ import { AlertsModule } from 'angular-alert-module';
 import { VisitorListComponent } from './visitor-list/visitor-list.component';
 import { UserLoginComponent } from './user-login/user-login.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { AdminLoginComponent } from './admin-login/admin-login.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
     NewUserComponent,
     VisitorListComponent,
     UserLoginComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    AdminLoginComponent
   ],
   imports: [
     AppRoutingModule,
