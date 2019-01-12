@@ -3,6 +3,7 @@ import { ApiService } from '../api.service';
 import {Visitor} from '../visitor';
 import {LocalStorage} from '@ngx-pwa/local-storage';
 import {Router} from '@angular/router';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-visitor-list',
@@ -12,7 +13,7 @@ import {Router} from '@angular/router';
 export class VisitorListComponent implements OnInit {
 
   visitorList = [Visitor];
-  constructor(private apiService: ApiService, protected localStorage: LocalStorage, private router: Router) { }
+  constructor(private apiService: ApiService, protected localStorage: LocalStorage, private router: Router, private translate: TranslateService) { }
 
   ngOnInit() {
     this.localStorage.getItem('admin').subscribe((admin: string) => {

@@ -3,6 +3,7 @@ import { ApiService } from '../api.service';
 import { LocalStorage } from '@ngx-pwa/local-storage';
 import { Router } from '@angular/router';
 import {Visitor} from '../visitor';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-user-profile',
@@ -13,7 +14,7 @@ export class UserProfileComponent implements OnInit {
 
   visitor = null;
 
-  constructor(private api: ApiService, protected localStorage: LocalStorage, private router: Router) {}
+  constructor(private api: ApiService, protected localStorage: LocalStorage, private router: Router, private translate: TranslateService) {}
 
 
   ngOnInit() {

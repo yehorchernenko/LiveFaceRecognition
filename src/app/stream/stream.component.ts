@@ -3,6 +3,7 @@ import { ApiService } from '../api.service';
 import { Observable } from 'rxjs';
 import {LocalStorage} from '@ngx-pwa/local-storage';
 import {Router} from '@angular/router';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-stream',
@@ -14,7 +15,7 @@ export class StreamComponent implements OnInit {
   enterURL = '';
   exitURL = '';
 
-  constructor(private api: ApiService, protected localStorage: LocalStorage, private router: Router) { }
+  constructor(private api: ApiService, protected localStorage: LocalStorage, private router: Router, private translate: TranslateService) { }
 
   ngOnInit() {
     this.localStorage.getItem('admin').subscribe((admin: string) => {

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {LocalStorage} from '@ngx-pwa/local-storage';
 import {ApiService} from '../api.service';
 import {Router} from '@angular/router';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-admin-login',
@@ -12,7 +13,7 @@ export class AdminLoginComponent implements OnInit {
   login = '';
   password = '';
 
-  constructor(private api: ApiService, protected localStorage: LocalStorage, private router: Router) {}
+  constructor(private api: ApiService, protected localStorage: LocalStorage, private router: Router, private translate: TranslateService) {}
 
   ngOnInit() {
     this.localStorage.getItem('admin').subscribe((admin: string) => {

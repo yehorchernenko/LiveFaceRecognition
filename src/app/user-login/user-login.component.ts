@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../api.service';
 import { LocalStorage } from '@ngx-pwa/local-storage';
 import { Router } from '@angular/router';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-user-login',
@@ -12,7 +13,7 @@ export class UserLoginComponent implements OnInit {
   email = '';
   password = '';
 
-  constructor(private api: ApiService, protected localStorage: LocalStorage, private router: Router) {}
+  constructor(private api: ApiService, protected localStorage: LocalStorage, private router: Router, private translate: TranslateService) {}
 
   ngOnInit() {
     this.localStorage.getItem('user').subscribe((user: string) => {

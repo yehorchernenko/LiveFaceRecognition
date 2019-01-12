@@ -23,6 +23,8 @@
     "@angular/platform-browser-dynamic": "~7.0.0",
     "@angular/router": "~7.0.0",
     "@ngx-pwa/local-storage": "^7.2.1",
+    "@ngx-translate/core": "^11.0.1",
+    "@ngx-translate/http-loader": "^4.0.0",
     "angular-alert-module": "^2.0.3",
     "body-parser": "^1.18.3",
     "core-js": "^2.5.4",

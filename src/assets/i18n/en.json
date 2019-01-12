@@ -1,0 +1,43 @@
+{
+  "loginAsAdmin": "Login as admin:",
+  "loginAsUser": "Login as user",
+  "login": "Login",
+  "email": "Email",
+  "password": "Password",
+  "loginButton": "Sign in",
+  "logoutButton": "Logout",
+  "userProfile": "User profile:",
+  "AdminPanel": {
+    "home": "Home",
+    "stream": "Stream",
+    "addNewUser": "Add new user"
+  },
+  "AddNewUser": {
+    "title": "Add new user.",
+    "name": "Name",
+    "email": "Email",
+    "images": "Images:",
+    "addButton": "Submit"
+  },
+  "Stream": {
+    "enterOutput": "Enter camera output",
+    "exitOutput": "Exit camera output",
+    "enterCameraURL": "Enter video stream URL",
+    "exitCameraURL": "Exit video stream URL",
+    "startButton": "Start recognition"
+  },
+  "Period": {
+    "title": "Period: ",
+    "today": "Today",
+    "week": "One week",
+    "all": "All time"
+  },
+  "Visitor": {
+    "title": "User information:",
+    "name": "Name: ",
+    "email": "Email: ",
+    "totalHours": "Total worked: ",
+    "lastVisit": "Last enter: ",
+    "isPresent": "Is present: "
+  }
+}

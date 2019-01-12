@@ -1,40 +1,46 @@
 <body>
 <mat-toolbar>
   <mat-toolbar-row>
-    <a mat-button [routerLink]="['/admin']">Home</a>
-    <a mat-button [routerLink]="['/admin/stream']">Stream</a>
-    <a mat-button [routerLink]="['/admin/user/new']">Add new user</a>
-    <button mat-button (click)="logout()" style="background-color: lightsteelblue;">Logout</button>
+    <a mat-button [routerLink]="['/admin']">{{'AdminPanel.home' | translate}}</a>
+    <a mat-button [routerLink]="['/admin/stream']">{{'AdminPanel.stream' | translate}}</a>
+    <a mat-button [routerLink]="['/admin/user/new']">{{'AdminPanel.addNewUser' | translate}}</a>
+    <button mat-button (click)="logout()" style="background-color: lightsteelblue;">{{'logoutButton' | translate}}</button>
   </mat-toolbar-row>
 </mat-toolbar>
 
+<!--"Stream": {-->
+<!--"enterOutput": "Зображення камери на вході",-->
+<!--"exitOutput": "Зображення камери на виході",-->
+<!--"enterCameraURL": "Посилання на камеру входу",-->
+<!--"exitCameraURL": "Посилання на камеру виходу",-->
+<!--"startButton": "Розпочати розпізнавання"-->
 <div class="container">
   <div class="enter">
-    <mat-label class="video-label">Enter camera output:</mat-label>
+    <mat-label class="video-label">{{'Stream.enterOutput' | translate}}</mat-label>
     <video id=enter_video_stream class="video-js vjs-default-skin video_canvas" controls>
       <source
         src={{enterURL}}
         type="application/x-mpegURL">
     </video>
     <mat-form-field class="input-container">
-      <input matInput [(ngModel)]="enterURL" placeholder="Enter stream URL">
+      <input matInput [(ngModel)]="enterURL" placeholder="{{'Stream.enterCameraURL' | translate}}">
     </mat-form-field>
   </div>
 
   <div class="exit">
-    <mat-label class="video-label">Exit camera output:</mat-label>
+    <mat-label class="video-label">{{'Stream.exitOutput' | translate}}</mat-label>
     <video id=exit_video_stream class="video-js vjs-default-skin video_canvas" controls>
       <source
         src={{exitURL}}
         type="application/x-mpegURL">
     </video>
     <mat-form-field class="input-container">
-      <input matInput [(ngModel)]="exitURL" placeholder="Exit stream URL">
+      <input matInput [(ngModel)]="exitURL" placeholder="{{'Stream.exitCameraURL' | translate}}">
     </mat-form-field>
   </div>
 </div>
 <div class="start-button-container">
-  <button mat-flat-button class="start-button" onclick="play()" (click)="startRecognition()">Start recognition</button>
+  <button mat-flat-button class="start-button" onclick="play()" (click)="startRecognition()">{{'Stream.startButton' | translate}}</button>
 </div>
 
 

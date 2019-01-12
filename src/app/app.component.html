@@ -1,5 +1,8 @@
 <div class="mat-typography">
   <h2 style="text-align: center">{{title}}</h2>
-
+  <mat-button-toggle-group #group="matButtonToggleGroup" value="en">
+    <mat-button-toggle value="ua" (click)="switchLanguage('ua')">UA</mat-button-toggle>
+    <mat-button-toggle value="en" (click)="switchLanguage('en')">EN</mat-button-toggle>
+  </mat-button-toggle-group>
   <router-outlet></router-outlet>
 </div>

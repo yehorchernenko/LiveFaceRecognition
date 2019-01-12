@@ -1,29 +1,29 @@
 <mat-toolbar>
   <mat-toolbar-row>
-    <a mat-button [routerLink]="['/admin']">Home</a>
-    <a mat-button [routerLink]="['/admin/stream']">Stream</a>
-    <a mat-button [routerLink]="['/admin/user/new']">Add new user</a>
-    <button mat-button (click)="logout()" style="background-color: lightsteelblue;">Logout</button>
+    <a mat-button [routerLink]="['/admin']">{{'AdminPanel.home' | translate}}</a>
+    <a mat-button [routerLink]="['/admin/stream']">{{'AdminPanel.stream' | translate}}</a>
+    <a mat-button [routerLink]="['/admin/user/new']">{{'AdminPanel.addNewUser' | translate}}</a>
+    <button mat-button (click)="logout()" style="background-color: lightsteelblue;">{{'logoutButton' | translate}}</button>
   </mat-toolbar-row>
 </mat-toolbar>
 
 <mat-chip-list class="chip-list">
-  <label>Display for: </label>
-  <mat-chip (click)="selctionChange(0)">Today</mat-chip>
-  <mat-chip (click)="selctionChange(1)">One week</mat-chip>
-  <mat-chip (click)="selctionChange(2)">All</mat-chip>
+  <label>{{'Period.title' | translate}}</label>
+  <mat-chip (click)="selctionChange(0)">{{'Period.today' | translate}}</mat-chip>
+  <mat-chip (click)="selctionChange(1)">{{'Period.week' | translate}}</mat-chip>
+  <mat-chip (click)="selctionChange(2)">{{'Period.all' | translate}}</mat-chip>
 </mat-chip-list>
 
-<h4 style="text-align: center">Users information:</h4>
+<h4 style="text-align: center">{{'Visitor.title' | translate}}</h4>
 <mat-list>
   <mat-list-item *ngFor="let visitor of visitorList">
     <div class="row" mat-line="">
-      <div class="column"><p>Name: {{visitor.name}}</p></div>
-      <div class="column"><p>Email: {{visitor.email}}</p></div>
-      <div class="column"><p>Total worked: {{visitor.formattedTotalTime}}</p></div>
-      <div class="column"><p>Last enter: {{visitor.formattedLastVisit}}</p></div>
+      <div class="column"><p>{{'Visitor.name' | translate}}{{visitor.name}}</p></div>
+      <div class="column"><p>{{'Visitor.email' | translate}}{{visitor.email}}</p></div>
+      <div class="column"><p>{{'Visitor.totalHours' | translate}}{{visitor.formattedTotalTime}}</p></div>
+      <div class="column"><p>{{'Visitor.lastVisit' | translate}}{{visitor.formattedLastVisit}}</p></div>
       <div class="column">
-        <div class="column"><p>Is present:</p></div>
+        <div class="column"><p>{{'Visitor.isPresent' | translate}}</p></div>
         <div style="display: inline; float: right"><span class="isPresent-item" ngClass="{{visitor.isPresent ? 'color-green' : 'color-red'}}">&#8226;</span></div>
       </div>
     </div>

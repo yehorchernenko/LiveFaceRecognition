@@ -1,32 +1,32 @@
 <mat-toolbar>
   <mat-toolbar-row>
-    <a mat-button [routerLink]="['/admin']">Home</a>
-    <a mat-button [routerLink]="['/admin/stream']">Stream</a>
-    <a mat-button [routerLink]="['/admin/user/new']">Add new user</a>
-    <button mat-button (click)="logout()" style="background-color: lightsteelblue;">Logout</button>
+    <a mat-button [routerLink]="['/admin']">{{'AdminPanel.home' | translate}}</a>
+    <a mat-button [routerLink]="['/admin/stream']">{{'AdminPanel.stream' | translate}}</a>
+    <a mat-button [routerLink]="['/admin/user/new']">{{'AdminPanel.addNewUser' | translate}}</a>
+    <button mat-button (click)="logout()" style="background-color: lightsteelblue;">{{'logoutButton' | translate}}</button>
   </mat-toolbar-row>
 </mat-toolbar>
 <div class="container">
 
   <form (ngSubmit)="onSubmit()">
-    <label class="field" style="text-align: center">Add new user.</label>
+    <label class="field" style="text-align: center">{{'AddNewUser.title' | translate}}</label>
 
     <mat-form-field class="field">
-      <input matInput placeholder="Name" type="text" id="name" required
+      <input matInput placeholder="{{'AddNewUser.name' | translate}}" type="text" id="name" required
              [(ngModel)]="model.displayName" name="name">
     </mat-form-field>
     <mat-form-field class="field">
-      <input matInput placeholder="Email" type="text" id="email" required
+      <input matInput placeholder="{{'AddNewUser.email' | translate}}" type="text" id="email" required
              [(ngModel)]="model.email" name="email">
     </mat-form-field>
 
     <div>
-      <label>Images:</label>
+      <label>{{'AddNewUser.images' | translate}}</label>
       <input placeholder="Email" type="file" multiple accept="image/jpeg" id="images"
              name="images" (change)="onImagesChanged($event)">
     </div>
     <div class="add-button-container">
-      <button mat-flat-button class="add-button" type="submit">Submit</button>
+      <button mat-flat-button class="add-button" type="submit">{{'AddNewUser.addButton' | translate}}</button>
     </div>
     </form>
 </div>

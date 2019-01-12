@@ -4,6 +4,7 @@ import { User } from '../user';
 import { AlertsService } from 'angular-alert-module';
 import {LocalStorage} from '@ngx-pwa/local-storage';
 import {Router} from '@angular/router';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-new-user',
@@ -13,7 +14,7 @@ import {Router} from '@angular/router';
 export class NewUserComponent implements OnInit {
   model = new User('', '');
 
-  constructor(private apiService: ApiService, private alerts: AlertsService, protected localStorage: LocalStorage, private router: Router) { }
+  constructor(private apiService: ApiService, private alerts: AlertsService, protected localStorage: LocalStorage, private router: Router, private translate: TranslateService) { }
 
   ngOnInit() {
     this.localStorage.getItem('admin').subscribe((admin: string) => {

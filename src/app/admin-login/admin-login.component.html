@@ -1,19 +1,19 @@
 <div class="container">
 
   <form (ngSubmit)="onSubmit()">
-    <label class="field" style="text-align: center">Login as admin:</label>
+    <label class="field" style="text-align: center" translate>loginAsAdmin</label>
 
     <mat-form-field class="field">
-      <input matInput placeholder="Login" type="text" id="login" required
-             [(ngModel)]="login" name="login">
+      <input matInput placeholder="{{'login' | translate}}" type="text" id="login" required
+             [(ngModel)]="login" name="login" translate>
     </mat-form-field>
     <mat-form-field class="field">
-      <input matInput placeholder="Password" type="password" id="password" required
+      <input matInput placeholder="{{'password' | translate}}" type="password" id="password" required
              [(ngModel)]="password" name="password">
     </mat-form-field>
 
     <div class="login-button-container">
-      <button mat-flat-button class="login-button" type="submit">Submit</button>
+      <button mat-flat-button class="login-button" type="submit" >{{ 'loginButton' | translate}}</button>
     </div>
   </form>
 </div>
