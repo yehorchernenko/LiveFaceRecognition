@@ -20,7 +20,10 @@
 .isPresent-item {
   font-size: 46px;
   text-align: center;
+}
 
+.chip-list {
+  margin: 10px;
 }
 
 

@@ -52,4 +52,8 @@ export class VisitorListComponent implements OnInit {
       this.router.navigate(['/admin/login']);
     });
   }
+
+  selctionChange(index) {
+    console.log(index);
+  }
 }
