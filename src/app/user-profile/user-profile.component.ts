@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import {Visitor} from '../visitor';
 import {TranslateService} from '@ngx-translate/core';
 import {VisitHistory} from '../visit-history';
+import {Period} from '../period.enum';
 
 @Component({
   selector: 'app-user-profile',
@@ -12,7 +13,7 @@ import {VisitHistory} from '../visit-history';
   styleUrls: ['./user-profile.component.css']
 })
 export class UserProfileComponent implements OnInit {
-
+  period = Period.all;
   visitor = null;
 
   constructor(private api: ApiService, protected localStorage: LocalStorage, private router: Router, private translate: TranslateService) {}
@@ -28,7 +29,7 @@ export class UserProfileComponent implements OnInit {
 
           this.visitor = new Visitor(
             visitor.name, visitor.email, visitor.isPresent, visitor.history.map(visit => {
-              return new VisitHistory(visit.enteredAt, visit.exitedAt);
+              return new VisitHistory((new Date(visit.enteredAt)), (visit.exitedAt === null ? (new Date()) : (new Date(visit.exitedAt))));
             }));
         }, error => {
           console.log(`Error ${error}`);
@@ -59,5 +60,87 @@ export class UserProfileComponent implements OnInit {
     this.localStorage.removeItem('user').subscribe(() => {
       this.router.navigate(['/']);
     });
+  }
+
+  visitsForPeriod() {
+    return this.visitor.history.filter(visit => {
+      switch (this.period) {
+        case Period.today: {
+          const now = new Date();
+          return visit.enteredAt.getDay() === now.getDay() && visit.enteredAt.getMonth() === now.getMonth();
+        }
+        case Period.week: {
+          let minimumDate = new Date();
+          minimumDate.setDate(minimumDate.getDate() - 7);
+
+          return visit.enteredAt > minimumDate;
+        }
+        case Period.all: {
+          return true;
+        }
+        default: {
+          return true;
+        }
+      }
+    }).map(v => {
+      const duration = v.exitedAt - v.enteredAt;
+
+      return {
+        enteredAt: v.enteredAt,
+        exitedAt: v.exitedAt ,
+        visitDuration: this.msToTime(duration)
+      };
+    });
+  }
+
+  totalPresentTimeFor() {
+    let totalTime = 0;
+
+    this.visitor.history.filter(visit => {
+      switch (this.period) {
+        case Period.today: {
+          const now = new Date();
+          return visit.enteredAt.getDay() === now.getDay() && visit.enteredAt.getMonth() === now.getMonth();
+        }
+        case Period.week: {
+          let minimumDate = new Date();
+          minimumDate.setDate(minimumDate.getDate() - 7);
+
+          return visit.enteredAt > minimumDate;
+        }
+        case Period.all: {
+          return true;
+        }
+        default: {
+          return true;
+        }
+      }
+    }).forEach(v => {
+      totalTime += v.exitedAt - v.enteredAt;
+    });
+
+    return this.msToTime(totalTime);
+  }
+
+
+  selctionChange(index) {
+    switch (index) {
+      case 0: {
+        this.period = Period.today;
+        break;
+      }
+      case 1: {
+        this.period = Period.week;
+        break;
+      }
+      case 2: {
+        this.period = Period.all;
+        break;
+      }
+      default: {
+        this.period = Period.all;
+      }
+    }
+    console.log(this.period);
   }
 }

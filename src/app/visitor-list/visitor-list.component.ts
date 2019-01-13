@@ -5,6 +5,7 @@ import {LocalStorage} from '@ngx-pwa/local-storage';
 import {Router} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
 import {VisitHistory} from '../visit-history';
+import {Period} from '../period.enum';
 
 @Component({
   selector: 'app-visitor-list',
@@ -12,7 +13,7 @@ import {VisitHistory} from '../visit-history';
   styleUrls: ['./visitor-list.component.css']
 })
 export class VisitorListComponent implements OnInit {
-
+  period = Period.all;
   visitorList = [Visitor];
   constructor(private apiService: ApiService, protected localStorage: LocalStorage, private router: Router, private translate: TranslateService) { }
 
@@ -31,7 +32,6 @@ export class VisitorListComponent implements OnInit {
       this.visitorList = visitors.map(visitor => {
         return new Visitor(
           visitor.name, visitor.email, visitor.isPresent, visitor.history.map(visit => {
-            console.log(visit.exitedAt )
             return new VisitHistory((new Date(visit.enteredAt)), (visit.exitedAt === null ? (new Date()) : (new Date(visit.exitedAt))));
           }));
       });
@@ -41,7 +41,26 @@ export class VisitorListComponent implements OnInit {
   }
 
   visitsForPeriod(visitor) {
-    return visitor.history.map(v => {
+    return visitor.history.filter(visit => {
+      switch (this.period) {
+        case Period.today: {
+          const now = new Date();
+          return visit.enteredAt.getDay() === now.getDay() && visit.enteredAt.getMonth() === now.getMonth();
+        }
+        case Period.week: {
+          let minimumDate = new Date();
+          minimumDate.setDate(minimumDate.getDate() - 7);
+
+          return visit.enteredAt > minimumDate;
+        }
+        case Period.all: {
+          return true;
+        }
+        default: {
+          return true;
+        }
+      }
+    }).map(v => {
       const duration = v.exitedAt - v.enteredAt;
 
       return {
@@ -55,7 +74,26 @@ export class VisitorListComponent implements OnInit {
   totalPresentTimeFor(visitor) {
     let totalTime = 0;
 
-    visitor.history.forEach(v => {
+    visitor.history.filter(visit => {
+      switch (this.period) {
+        case Period.today: {
+          const now = new Date();
+          return visit.enteredAt.getDay() === now.getDay() && visit.enteredAt.getMonth() === now.getMonth();
+        }
+        case Period.week: {
+          let minimumDate = new Date();
+          minimumDate.setDate(minimumDate.getDate() - 7);
+
+          return visit.enteredAt > minimumDate;
+        }
+        case Period.all: {
+          return true;
+        }
+        default: {
+          return true;
+        }
+      }
+    }).forEach(v => {
       totalTime += v.exitedAt - v.enteredAt;
     });
 
@@ -64,11 +102,11 @@ export class VisitorListComponent implements OnInit {
 
 
   msToTime(duration) {
-    let minutes = Math.floor((duration / (1000 * 60)) % 60);
-    let hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((duration / (1000 * 60)) % 60);
+    const hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
 
-    let h = (hours < 10) ?  `0${hours}` : `${hours}`;
-    let m = (minutes < 10) ? `0${minutes}` : `${minutes}`;
+    const h = (hours < 10) ?  `0${hours}` : `${hours}`;
+    const m = (minutes < 10) ? `0${minutes}` : `${minutes}`;
 
     return h + ':' + m;
   }
@@ -80,6 +118,23 @@ export class VisitorListComponent implements OnInit {
   }
 
   selctionChange(index) {
-    console.log(index);
+    switch (index) {
+      case 0: {
+        this.period = Period.today;
+        break;
+      }
+      case 1: {
+        this.period = Period.week;
+        break;
+      }
+      case 2: {
+        this.period = Period.all;
+        break;
+      }
+      default: {
+        this.period = Period.all;
+      }
+    }
+    console.log(this.period);
   }
 }

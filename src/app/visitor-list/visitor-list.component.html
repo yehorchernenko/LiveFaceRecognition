@@ -7,14 +7,14 @@
   </mat-toolbar-row>
 </mat-toolbar>
 
-<mat-chip-list class="chip-list">
-  <label>{{'Period.title' | translate}}</label>
-  <mat-chip (click)="selctionChange(0)">{{'Period.today' | translate}}</mat-chip>
-  <mat-chip (click)="selctionChange(1)">{{'Period.week' | translate}}</mat-chip>
-  <mat-chip (click)="selctionChange(2)">{{'Period.all' | translate}}</mat-chip>
-</mat-chip-list>
-
-<!--<h4 style="text-align: center">{{'Visitor.title' | translate}}</h4>-->
+<div style="margin-left:30px;">
+  <mat-chip-list class="chip-list" style="margin-left:30px;">
+    <label>{{'Period.title' | translate}}</label>
+    <mat-chip (click)="selctionChange(0)">{{'Period.today' | translate}}</mat-chip>
+    <mat-chip (click)="selctionChange(1)">{{'Period.week' | translate}}</mat-chip>
+    <mat-chip (click)="selctionChange(2)">{{'Period.all' | translate}}</mat-chip>
+  </mat-chip-list>
+</div>
 <mat-list>
   <div *ngFor="let visitor of visitorList">
     <mat-expansion-panel>
@@ -27,7 +27,7 @@
               <div class="column"><p>{{'Visitor.isPresent' | translate}}</p></div>
               <div style="display: inline; float: right"><span class="isPresent-item" ngClass="{{visitor.isPresent ? 'color-green' : 'color-red'}}">&#8226;</span></div>
             </div>
-            <div class="column"><p>Total present time: {{totalPresentTimeFor(visitor)}}</p></div>
+            <div class="column"><p>{{'Visitor.totalHours' | translate}}{{totalPresentTimeFor(visitor)}}</p></div>
           </div>
         </mat-list-item>
       </mat-expansion-panel-header>
@@ -35,9 +35,9 @@
             <div *ngFor="let visit of visitsForPeriod(visitor)">
               <mat-list-item>
                 <div class="row" mat-line="">
-                  <div class="history"><p>Entered at: {{visit.enteredAt | date:'HH:mm MM-dd-yyyy'}}</p></div>
-                  <div class="history"><p>Exited at: {{visit.exitedAt | date:'HH:mm MM-dd-yyyy'}}</p></div>
-                  <div class="history"><p>Present time: {{visit.visitDuration}}</p></div>
+                  <div class="history"><p>{{'Visitor.enteredAt' | translate}}{{visit.enteredAt | date:'HH:mm MM-dd-yyyy'}}</p></div>
+                  <div class="history"><p>{{'Visitor.exitedAt' | translate}}{{visit.exitedAt | date:'HH:mm MM-dd-yyyy'}}</p></div>
+                  <div class="history"><p>{{'Visitor.presentTime' | translate}}{{visit.visitDuration}}</p></div>
                 </div>
               </mat-list-item>
             </div>

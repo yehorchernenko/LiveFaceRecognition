@@ -1,17 +1,41 @@
 <h4 style="text-align: center">{{'userProfile' | translate}}</h4>
+
+<div style="margin-left:30px;">
+  <mat-chip-list class="chip-list">
+    <label>{{'Period.title' | translate}}</label>
+    <mat-chip (click)="selctionChange(0)">{{'Period.today' | translate}}</mat-chip>
+    <mat-chip (click)="selctionChange(1)">{{'Period.week' | translate}}</mat-chip>
+    <mat-chip (click)="selctionChange(2)">{{'Period.all' | translate}}</mat-chip>
+  </mat-chip-list>
+</div>
 <mat-list>
-  <mat-list-item>
-    <div class="row" mat-line="">
-      <div class="column"><p>{{'Visitor.name' | translate}}{{visitor.name}}</p></div>
-      <div class="column"><p>{{'Visitor.email' | translate}}{{visitor.email}}</p></div>
-      <!--<div class="column"><p>{{'Visitor.totalHours' | translate}}{{visitor.formattedTotalTime}}</p></div>-->
-      <!--<div class="column"><p>{{'Visitor.lastVisit' | translate}}{{visitor.formattedLastVisit}}</p></div>-->
-      <div class="column">
-        <div class="column"><p>{{'Visitor.isPresent' | translate}}</p></div>
-        <div style="display: inline; float: right"><span class="isPresent-item" ngClass="{{visitor.isPresent ? 'color-green' : 'color-red'}}">&#8226;</span></div>
-      </div>
-    </div>
-    <mat-divider></mat-divider>
-  </mat-list-item>
+  <div>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-list-item>
+          <div class="row" mat-line="">
+            <div class="column"><p>{{'Visitor.name' | translate}}{{visitor.name}}</p></div>
+            <div class="column"><p>{{'Visitor.email' | translate}}{{visitor.email}}</p></div>
+            <div class="column">
+              <div class="column"><p>{{'Visitor.isPresent' | translate}}</p></div>
+              <div style="display: inline; float: right"><span class="isPresent-item" ngClass="{{visitor.isPresent ? 'color-green' : 'color-red'}}">&#8226;</span></div>
+            </div>
+            <div class="column"><p>{{'Visitor.totalHours' | translate}}{{totalPresentTimeFor()}}</p></div>
+          </div>
+        </mat-list-item>
+      </mat-expansion-panel-header>
+      <mat-list style="margin-left:30px;">
+        <div *ngFor="let visit of visitsForPeriod()">
+          <mat-list-item>
+            <div class="row" mat-line="">
+              <div class="history"><p>{{'Visitor.enteredAt' | translate}}{{visit.enteredAt | date:'HH:mm MM-dd-yyyy'}}</p></div>
+              <div class="history"><p>{{'Visitor.exitedAt' | translate}}{{visit.exitedAt | date:'HH:mm MM-dd-yyyy'}}</p></div>
+              <div class="history"><p>{{'Visitor.presentTime' | translate}}{{visit.visitDuration}}</p></div>
+            </div>
+          </mat-list-item>
+        </div>
+      </mat-list>
+    </mat-expansion-panel>
+  </div>
 </mat-list>
 <button mat-button (click)="logout()" style="background-color: lightsteelblue;">{{'logoutButton' | translate}}</button>
