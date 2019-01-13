@@ -8,22 +8,24 @@ var VisitorSchema = new mongoose.Schema({
     email: {type: String, ref: 'User'},
     displayName: {type: String, ref: 'User'}
   },
-  presentTime: {type: Number, default: 0},
-  visitedAt: {type: Date, default: Date.now},
-  isPresent: {type: Boolean, default: true}
+  isPresent: {type: Boolean, default: true},
+  history: [
+    {
+      enteredAt: {type: Date, default: Date.now},
+      exitedAt: {type: Date, default: null},
+    }
+  ]
 });
 
 VisitorSchema.methods.toJSON = function () {
-  var visitor = this;
-  var visitorObject = visitor.toObject();
+  let visitor = this;
+  let visitorObject = visitor.toObject();
 
-  var presentTime = visitorObject.isPresent ? (new Date()) - visitorObject.visitedAt + visitor.presentTime : visitor.presentTime;
   return {
     name: visitorObject.user.displayName,
     email: visitorObject.user.email,
-    presentTime: presentTime,
     isPresent: visitorObject.isPresent,
-    lastVisit: visitorObject.visitedAt
+    history: visitorObject.history,
   }
 };
 

@@ -68,13 +68,17 @@ class VisitorChecker {
             console.log(`Fetching visitors error: ${err}`);
             cb(null);
           } else if (visitor) {
+            let now = new Date();
 
             if (isEnter && !visitor.isPresent) {
-              let now = new Date();
 
               Visitor.findOneAndUpdate({'user.email': user.email}, {$set: {
-                  isPresent: true,
-                  visitedAt: now
+                  isPresent: true
+                }, $push: {
+                  history: {
+                    enteredAt: now,
+                    exitedAt: null,
+                  }
                 }}, (err) => {
                 if (err) {
                   console.log(`Error when updating visitor on enter ${err}`);
@@ -83,17 +87,20 @@ class VisitorChecker {
                 } else {
                   // console.log(`User ${visitor.user.displayName} entered office at ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`)
                   // console.log(`Present time ${visitor.presentTime / 1000 | 0}`)
-                  cb(`User ${visitor.user.displayName} entered office at ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()} Present time ${visitor.presentTime / 1000 | 0}`);
+                  cb(`User ${visitor.user.displayName} entered office at ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`);
                 }
               });
 
             } else if (!isEnter && visitor.isPresent){
-              let now = new Date();
-              let presentTime = now - visitor.visitedAt;
+
+              visitor.history[visitor.history.length - 1] = {
+                enteredAt: visitor.history[visitor.history.length - 1].enteredAt,
+                exitedAt: now,
+              };
 
               Visitor.findOneAndUpdate({'user.email': user.email}, {$set: {
                   isPresent: false,
-                  presentTime: presentTime + visitor.presentTime
+                  history: visitor.history
                 }}, (err) => {
                 if (err) {
                   console.log(`Error when updating visitor on enter ${err}`);
@@ -102,7 +109,7 @@ class VisitorChecker {
                 } else {
                   // console.log(`User ${visitor.user.displayName} exit office at ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`)
                   // console.log(`Present time ${(presentTime + visitor.presentTime) / 1000 | 0}`)
-                  cb(`User ${visitor.user.displayName} exit office at ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()} Present time ${(presentTime + visitor.presentTime) / 1000 | 0}`);
+                  cb(`User ${visitor.user.displayName} exit office at ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`);
                 }
               });
 
@@ -117,7 +124,12 @@ class VisitorChecker {
                 _id: user._id,
                 email: user.email,
                 displayName: user.displayName
-              }
+              },
+              isPresent: true,
+              history: [{
+                enteredAt: (new Date()),
+                exitedAt: null,
+              }]
             });
             newVisitor.save().then( vistor => {
               //console.log(`Welcome ${vistor.user.displayName}`)
