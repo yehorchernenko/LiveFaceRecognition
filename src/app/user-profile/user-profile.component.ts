@@ -4,6 +4,7 @@ import { LocalStorage } from '@ngx-pwa/local-storage';
 import { Router } from '@angular/router';
 import {Visitor} from '../visitor';
 import {TranslateService} from '@ngx-translate/core';
+import {VisitHistory} from '../visit-history';
 
 @Component({
   selector: 'app-user-profile',
@@ -24,10 +25,11 @@ export class UserProfileComponent implements OnInit {
 
         this.api.userProfile(userObj.email, userObj.password).subscribe(response => {
           const visitor = response.body;
-          const lastVisit = new Date(visitor.lastVisit);
-          this.visitor =  new Visitor(
-            visitor.name, visitor.email, visitor.isPresent, visitor.presentTime, this.msToTime(visitor.presentTime),
-            visitor.lastVisit, `${lastVisit.getDate()}-${lastVisit.getMonth()}-${lastVisit.getFullYear()} ${lastVisit.getHours()}:${lastVisit.getMinutes()}`);
+
+          this.visitor = new Visitor(
+            visitor.name, visitor.email, visitor.isPresent, visitor.history.map(visit => {
+              return new VisitHistory(visit.enteredAt, visit.exitedAt);
+            }));
         }, error => {
           console.log(`Error ${error}`);
           this.router.navigate(['/']);

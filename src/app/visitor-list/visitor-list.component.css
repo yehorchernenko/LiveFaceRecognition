@@ -3,6 +3,11 @@
   width: 20%;
 }
 
+.history {
+  float: left;
+  width: 30%;
+}
+
 .row:after {
   content: "";
   display: table;

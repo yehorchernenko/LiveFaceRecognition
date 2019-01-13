@@ -4,6 +4,7 @@ import {Visitor} from '../visitor';
 import {LocalStorage} from '@ngx-pwa/local-storage';
 import {Router} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
+import {VisitHistory} from '../visit-history';
 
 @Component({
   selector: 'app-visitor-list',
@@ -28,15 +29,39 @@ export class VisitorListComponent implements OnInit {
 
     this.apiService.getVisitorList().subscribe(visitors => {
       this.visitorList = visitors.map(visitor => {
-        const lastVisit = new Date(visitor.lastVisit);
         return new Visitor(
-          visitor.name, visitor.email, visitor.isPresent, visitor.presentTime, this.msToTime(visitor.presentTime),
-          visitor.lastVisit, `${lastVisit.getDate()}-${lastVisit.getMonth()}-${lastVisit.getFullYear()} ${lastVisit.getHours()}:${lastVisit.getMinutes()}`);
+          visitor.name, visitor.email, visitor.isPresent, visitor.history.map(visit => {
+            console.log(visit.exitedAt )
+            return new VisitHistory((new Date(visit.enteredAt)), (visit.exitedAt === null ? (new Date()) : (new Date(visit.exitedAt))));
+          }));
       });
     }, error => {
         console.log(`Fetching visitor list error ${error}`);
     });
   }
+
+  visitsForPeriod(visitor) {
+    return visitor.history.map(v => {
+      const duration = v.exitedAt - v.enteredAt;
+
+      return {
+        enteredAt: v.enteredAt,
+        exitedAt: v.exitedAt ,
+        visitDuration: this.msToTime(duration)
+      };
+    });
+  }
+
+  totalPresentTimeFor(visitor) {
+    let totalTime = 0;
+
+    visitor.history.forEach(v => {
+      totalTime += v.exitedAt - v.enteredAt;
+    });
+
+    return this.msToTime(totalTime);
+  }
+
 
   msToTime(duration) {
     let minutes = Math.floor((duration / (1000 * 60)) % 60);
