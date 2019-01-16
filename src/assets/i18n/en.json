@@ -36,6 +36,7 @@
     "title": "User information:",
     "name": "Name: ",
     "email": "Email: ",
+    "isPresent": "Is user present: ",
     "totalHours": "Total worked for period: ",
     "presentTime": "Present time: ",
     "enteredAt": "Entered at: ",

@@ -174,6 +174,17 @@ router.post('/user/predict/exit', upload, function (req, res) {
   });
 });
 
+router.post('/user/open/door', function (req, res) {
+  let email = req.body.email
+  let isEnter = req.body.isEnter
+
+  visitorChecker.defineVisitorFor(email, isEnter, (message) => {
+    console.log(message)
+    res.status(200).send({"email": email});
+  });
+});
+
+
 router.get('/visitor/list', function (req, res) {
   Visitor.find({}, (err, visitors) => {
 
