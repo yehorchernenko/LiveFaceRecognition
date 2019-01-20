@@ -19,6 +19,7 @@ import { AdminLoginComponent } from './admin-login/admin-login.component';
 /**Localization https://medium.com/letsboot/translate-angular-4-apps-with-ngx-translate-83302fb6c10d*/
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { EditComponent } from './edit/edit.component';
 
 
 
@@ -34,7 +35,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     VisitorListComponent,
     UserLoginComponent,
     UserProfileComponent,
-    AdminLoginComponent
+    AdminLoginComponent,
+    EditComponent
   ],
   imports: [
     AppRoutingModule,

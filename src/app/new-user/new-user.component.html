@@ -1,7 +1,7 @@
 <mat-toolbar>
   <mat-toolbar-row>
     <a mat-button [routerLink]="['/admin']">{{'AdminPanel.home' | translate}}</a>
-    <!--<a mat-button [routerLink]="['/admin/stream']">{{'AdminPanel.stream' | translate}}</a>-->
+    <a mat-button [routerLink]="['/admin/edit']">{{'AdminPanel.edit' | translate}}</a>
     <a mat-button [routerLink]="['/admin/user/new']">{{'AdminPanel.addNewUser' | translate}}</a>
     <button mat-button (click)="logout()" style="background-color: lightsteelblue;">{{'logoutButton' | translate}}</button>
   </mat-toolbar-row>

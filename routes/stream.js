@@ -199,6 +199,14 @@ router.get('/visitor/list', function (req, res) {
   });
 });
 
+
+router.get('/user/list', function (req, res) {
+  User.find({}, (err, visitors) => {
+
+    res.status(200).json(visitors.map((visitor) => visitor.toJSON()))
+  });
+});
+
 router.post('/admin/login', function (req, res) {
   if (req.body.login === process.env.ADMIN_LOGIN && req.body.pass === process.env.ADMIN_PASS) {
     res.status(200).send({message: 'Admin successfully logged in'});

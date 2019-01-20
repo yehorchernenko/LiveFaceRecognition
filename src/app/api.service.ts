@@ -11,6 +11,7 @@ const apiUrl = '/api';
 const startRecognitionUrl = '/api/startRecognition';
 const newUserURL = '/api/user/new';
 const visitorListURL = '/api/visitor/list';
+const userListURL = '/api/user/list';
 const userLoginURL = '/api/user/login';
 const userProfileURL = '/api/user/profile';
 const adminLoginURL = '/api/admin/login';
@@ -87,5 +88,11 @@ export class ApiService {
   adminLogin(login: string, pass: string): Observable<any> {
     const body = { login: login, pass: pass };
     return this.http.post(adminLoginURL, body, {observe: 'response'});
+  }
+
+  getUserList(): Observable<any> {
+    return this.http.get(userListURL).pipe(
+      catchError(this.handleError)
+    );
   }
 }

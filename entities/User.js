@@ -23,6 +23,18 @@ var UserSchema = new mongoose.Schema({
   }
 });
 
+UserSchema.methods.toJSON = function () {
+  let user = this;
+  let userObject = user.toObject();
+
+  return {
+    displayName: userObject.displayName,
+    email: userObject.email,
+    images: userObject.images,
+    password: userObject.password,
+  }
+};
+
 var User = mongoose.model('User', UserSchema);
 
 module.exports = User;

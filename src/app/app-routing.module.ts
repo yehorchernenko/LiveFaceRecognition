@@ -6,6 +6,7 @@ import { VisitorListComponent } from './visitor-list/visitor-list.component';
 import { UserLoginComponent } from './user-login/user-login.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { AdminLoginComponent } from './admin-login/admin-login.component';
+import { EditComponent } from './edit/edit.component';
 
 const routes: Routes = [
   {
@@ -26,13 +27,13 @@ const routes: Routes = [
   {
     path: 'admin/login',
     component: AdminLoginComponent,
-    data: { title: 'Stream information.'}
+    data: { title: 'Admin login information.'}
   },
-  // {
-  //   path: 'admin/stream',
-  //   component: StreamComponent,
-  //   data: { title: 'Stream information.'}
-  // },
+  {
+    path: 'admin/edit',
+    component: EditComponent,
+    data: { title: 'Edit.'}
+  },
   {
     path: 'admin/user/new',
     component: NewUserComponent,
