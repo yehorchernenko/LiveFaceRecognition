@@ -63,6 +63,13 @@ router.post('/user/new', upload, function (req, res) {
     faceRecon.cropImages(req.body.email, tmpStoragePath);
     faceRecon.trainFaceByUser(newUser);
 
+    const dataPath = path.resolve('./uploads/', user.email);
+    const allFiles = fs.readdirSync(dataPath).map(fp => path.resolve(dataPath, fp));
+
+    User.findOneAndUpdate({_id: newUser._id}, {$set: {images: allFiles}}, (option, u) => {
+      console.log('Images successfully added');
+    });
+
     emptyTmpDir(req.body.email).then(() => {
       res.status(200).send('User created')
     });

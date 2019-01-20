@@ -6,6 +6,9 @@ var UserSchema = new mongoose.Schema({
     required: true,
     minlength: 4,
   },
+  images: [
+    {type: String}
+  ],
   email: {
     type: String,
     required: true,
