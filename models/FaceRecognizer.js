@@ -133,6 +133,19 @@ class TrainRecognizer {
     fs.writeFileSync('./uploads/model.json', JSON.stringify(recognizer.serialize()));
   }
 
+  renameClass(oldName, newName) {
+    const recognizer = fr.FaceRecognizer();
+    const modelState = require('../uploads/model.json');
+
+    recognizer.load(modelState);
+
+    var stringifyJson = JSON.stringify(recognizer.serialize());
+    var toSave = stringifyJson.replace(oldName, newName);
+
+    console.log(toSave)
+
+    fs.writeFileSync('./uploads/model.json', toSave);
+  }
 }
 
 module.exports = TrainRecognizer;

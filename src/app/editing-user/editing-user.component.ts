@@ -29,17 +29,19 @@ export class EditingUserComponent implements OnInit {
     });
 
     const id = this.activatedRouter.snapshot.paramMap.get('id');
-    console.log('User id' + id)
     this.apiService.getUserById(id).subscribe(user => {
       this.model = new UserEdit(user._id, user.displayName, user.email, user.password, user.images);
     }, error => {
       console.log(`Fetching user list error ${error}`);
     });
   }
+
+  onSubmit() {
+    this.apiService.updateUser(this.model).subscribe(response => {
+      if (response.status === 200) {
+        this.router.routeReuseStrategy.shouldReuseRoute = function () { return false; };
+      }
+    });
+  }
 }
-//
-// this.apiService.getUserById(params['id']).subscribe(user => {
-//   this.model = new UserEdit(user._id, user.displayName, user.email, user.password, user.images);
-// }, error => {
-//   console.log(`Fetching user list error ${error}`);
-// });
+

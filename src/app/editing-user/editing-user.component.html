@@ -1,3 +1,4 @@
+<button mat-button [routerLink]="['/admin/edit']" style="background-color: lightgray; clear: both">{{'back' | translate}}</button>
 <div class="container">
 
   <form (ngSubmit)="onSubmit()">
@@ -13,14 +14,9 @@
     </mat-form-field>
     <mat-form-field class="field">
       <input matInput placeholder="{{'Edit.password' | translate}}" type="text" id="pass" required
-             [(ngModel)]="model.password" name="email">
+             [(ngModel)]="model.password" name="password">
     </mat-form-field>
 
-    <!--<div>-->
-      <!--<label>{{'AddNewUser.images' | translate}}</label>-->
-      <!--<input placeholder="Email" type="file" multiple accept="image/jpeg" id="images"-->
-             <!--name="images" (change)="onImagesChanged($event)">-->
-    <!--</div>-->
     <div class="add-button-container">
       <button mat-flat-button class="add-button" type="submit">{{'Edit.done' | translate}}</button>
     </div>

@@ -120,7 +120,7 @@ router.post('/user/profile', function (req, res) {
   })
 });
 
-router.post('/user/update', upload, function (req, res) {
+router.post('/user/update/photo', upload, function (req, res) {
 
   User.findOne({email: req.body.email}, (err, obj) => {
     if (err) res.send({message: `User update error: ${err}`}, 404);
@@ -194,7 +194,7 @@ router.post('/user/open/door', function (req, res) {
   let isEnter = req.body.isEnter
 
   visitorChecker.defineVisitorFor(email, isEnter, (message) => {
-    console.log(message)
+    console.log(message);
     res.status(200).send({"email": email});
   });
 });
@@ -242,6 +242,31 @@ router.post('/user/by/id', function (req, res) {
     } else {
       res.status(200).send(result.toJSON())
     }
+  })
+});
+
+router.post('/user/update', function (req, res) {
+
+  let newUser = {
+    email: req.body.email,
+    displayName: req.body.displayName,
+    password: req.body.password
+  };
+
+  User.findOneAndUpdate({_id: req.body.id}, {$set: newUser }, (err, oldValue) => {
+    if (err !== null) throw err;
+
+    Visitor.findOneAndUpdate(`user.email: ${oldValue.email}`, {$set: {user: newUser}},(err2, result2) => {
+      faceRecon.renameClass(oldValue.email, req.body.email);
+
+      const oldPath = path.resolve('./uploads/', oldValue.email);
+      const newPath = path.resolve('./uploads/', req.body.email);
+
+      fs.rename(oldPath, newPath, err3 => {
+
+        res.status(200).send();
+     })
+    })
   })
 });
 
