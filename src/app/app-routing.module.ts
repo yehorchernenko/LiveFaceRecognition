@@ -28,11 +28,11 @@ const routes: Routes = [
     component: AdminLoginComponent,
     data: { title: 'Stream information.'}
   },
-  {
-    path: 'admin/stream',
-    component: StreamComponent,
-    data: { title: 'Stream information.'}
-  },
+  // {
+  //   path: 'admin/stream',
+  //   component: StreamComponent,
+  //   data: { title: 'Stream information.'}
+  // },
   {
     path: 'admin/user/new',
     component: NewUserComponent,

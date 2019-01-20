@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../api.service';
 import { User } from '../user';
-import { AlertsService } from 'angular-alert-module';
+import { AlertService } from 'ngx-alerts';
 import {LocalStorage} from '@ngx-pwa/local-storage';
 import {Router} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
@@ -14,7 +14,7 @@ import {TranslateService} from '@ngx-translate/core';
 export class NewUserComponent implements OnInit {
   model = new User('', '');
 
-  constructor(private apiService: ApiService, private alerts: AlertsService, protected localStorage: LocalStorage, private router: Router, private translate: TranslateService) { }
+  constructor(private apiService: ApiService, private alerts: AlertService, protected localStorage: LocalStorage, private router: Router, private translate: TranslateService) { }
 
   ngOnInit() {
     this.localStorage.getItem('admin').subscribe((admin: string) => {
@@ -32,15 +32,14 @@ export class NewUserComponent implements OnInit {
 
     this.apiService.addNewUser(this.model).subscribe(res => {
       this.model = new User(' ', ' ');
-      if (res.status === 200) {
-        this.alerts.setMessage(`New user successfully created`, 'success');
 
+      if (res.status === 200) {
+        this.alerts.success('User created successfully');
       } else {
-        this.alerts.setMessage(`Error occurred negative status code`, 'error');
+        this.alerts.warning('User creation failure');
       }
 
     }, error => {
-      this.alerts.setMessage(`Error occurred ${error}`, 'error');
       this.model = new User(' ', ' ');
     });
   }

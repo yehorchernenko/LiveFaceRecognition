@@ -10,7 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './shared/material.module';
-import { AlertsModule } from 'angular-alert-module';
+import { AlertModule } from 'ngx-alerts';
 import { VisitorListComponent } from './visitor-list/visitor-list.component';
 import { UserLoginComponent } from './user-login/user-login.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
@@ -19,6 +19,8 @@ import { AdminLoginComponent } from './admin-login/admin-login.component';
 /**Localization https://medium.com/letsboot/translate-angular-4-apps-with-ngx-translate-83302fb6c10d*/
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
+
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -36,7 +38,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   ],
   imports: [
     AppRoutingModule,
-    AlertsModule.forRoot(),
+    AlertModule.forRoot(),
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
