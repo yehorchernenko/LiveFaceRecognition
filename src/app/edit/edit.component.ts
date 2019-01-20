@@ -36,7 +36,7 @@ export class EditComponent implements OnInit {
   }
 
   editTouched(user) {
-    console.log(user);
+    this.router.navigate(['/admin/edit/user', user.id]);
   }
 
   deleteTouched(user) {

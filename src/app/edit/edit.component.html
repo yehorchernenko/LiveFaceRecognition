@@ -13,25 +13,18 @@
       <mat-expansion-panel-header>
         <mat-list-item>
           <div class="row" mat-line="">
-            <div class="column"><p>{{'Edit.name' | translate}}{{user.name}}</p></div>
+            <div class="column"><p>{{'Edit.name' | translate}}{{user.displayName}}</p></div>
             <div class="column"><p>{{'Edit.email' | translate}}{{user.email}}</p></div>
             <div class="column"><button (click)="editTouched(user)" color="gray">{{'Edit.editButton' | translate}}</button></div>
             <div class="column"><button (click)="deleteTouched(user)" color="gray">{{'Edit.deleteButton' | translate}}</button></div>
           </div>
         </mat-list-item>
       </mat-expansion-panel-header>
-      <mat-list style="margin-left:30px;">
-        <div *ngFor="let imgPath of user.images">
-          <mat-list-item>
-            <div class="row" mat-line>
-              <div>
-                <p>{{imgPath}}</p>
-                <img [src]="imgPath">
+        <div *ngFor="let imgPath of user.images" style="margin-left:30px; margin-top: 30px">
+              <div style="display: inline-block; float: left; border: 2px black solid; margin: 5px">
+                <img [src]="imgPath" style="width: 50px; height: 50px">
               </div>
-            </div>
-          </mat-list-item>
         </div>
-      </mat-list>
     </mat-expansion-panel>
   </div>
 </mat-list>

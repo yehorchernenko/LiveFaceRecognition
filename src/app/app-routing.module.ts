@@ -36,7 +36,7 @@ const routes: Routes = [
     data: { title: 'Edit.'}
   },
   {
-    path: 'admin/edit/user',
+    path: 'admin/edit/user/:id',
     component: EditingUserComponent,
     data: { title: 'Editing user.'}
   },

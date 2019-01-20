@@ -16,6 +16,7 @@ const userLoginURL = '/api/user/login';
 const userProfileURL = '/api/user/profile';
 const adminLoginURL = '/api/admin/login';
 const userDeleteURL = '/api/user/delete';
+const userByIdURL = '/api/user/by/id';
 
 @Injectable({
   providedIn: 'root'
@@ -99,5 +100,12 @@ export class ApiService {
 
   deleteUserById(id): Observable<any> {
     return this.http.post(userDeleteURL, {_id: id}, {observe: 'response'});
+  }
+
+  getUserById(id): Observable<any> {
+
+    return this.http.post(userByIdURL, {id: id}).pipe(
+      catchError(this.handleError)
+    );
   }
 }

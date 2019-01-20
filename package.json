@@ -25,6 +25,7 @@
     "@ngx-pwa/local-storage": "^7.2.1",
     "@ngx-translate/core": "^11.0.1",
     "@ngx-translate/http-loader": "^4.0.0",
+    "base64-img": "^1.0.4",
     "body-parser": "^1.18.3",
     "core-js": "^2.5.4",
     "dotenv": "^6.2.0",

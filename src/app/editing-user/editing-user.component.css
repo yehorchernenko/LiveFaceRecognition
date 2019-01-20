@@ -1,0 +1,27 @@
+.container {
+  margin: auto;
+  width: 30%;
+  padding-top: 20px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+}
+
+.field > * {
+  padding: 3%;
+  min-width: 94%;
+}
+
+.add-button-container {
+  margin: auto;
+  width: 30%;
+  padding-top: 20px;
+}
+
+.add-button {
+  background-color: lightsteelblue;
+  min-width: 100%;
+}
+

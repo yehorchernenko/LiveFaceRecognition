@@ -31,4 +31,7 @@
   margin: 10px;
 }
 
-
+.inline {
+  display: inline-block;
+  float: right;
+}

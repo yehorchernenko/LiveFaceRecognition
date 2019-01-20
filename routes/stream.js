@@ -12,6 +12,8 @@ const _ = require('lodash');
 const EmailService = require('../models/EmailService');
 const generator = require('generate-password');
 const exec = require('sync-exec');
+const base64Img = require('base64-img');
+
 
 require('dotenv').config();
 
@@ -66,7 +68,11 @@ router.post('/user/new', upload, function (req, res) {
     faceRecon.trainFaceByUser(newUser);
 
     const dataPath = path.resolve('./uploads/', user.email);
-    const allFiles = fs.readdirSync(dataPath).map(fp => path.resolve(dataPath, fp));
+    const allFiles = fs.readdirSync(dataPath)
+      .map(fp => path.resolve(dataPath, fp))
+      .map(fp => {
+        return base64Img.base64Sync(fp);
+      });
 
     User.findOneAndUpdate({_id: newUser._id}, {$set: {images: allFiles}}, (option, u) => {
       console.log('Images successfully added');
@@ -227,6 +233,16 @@ router.post('/admin/login', function (req, res) {
   } else {
     res.status(404).send({message: 'Incorrect password'});
   }
+});
+
+router.post('/user/by/id', function (req, res) {
+  User.findOne({_id: req.body.id}, (options, result) => {
+    if (result === null) {
+      res.status(404).send();
+    } else {
+      res.status(200).send(result.toJSON())
+    }
+  })
 });
 
 async function emptyTmpDir(fileName) {
