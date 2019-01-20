@@ -132,6 +132,7 @@ class TrainRecognizer {
 
     fs.writeFileSync('./uploads/model.json', JSON.stringify(recognizer.serialize()));
   }
+
 }
 
 module.exports = TrainRecognizer;

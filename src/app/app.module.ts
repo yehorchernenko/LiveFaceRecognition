@@ -20,6 +20,7 @@ import { AdminLoginComponent } from './admin-login/admin-login.component';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { EditComponent } from './edit/edit.component';
+import { EditingUserComponent } from './editing-user/editing-user.component';
 
 
 
@@ -36,7 +37,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     UserLoginComponent,
     UserProfileComponent,
     AdminLoginComponent,
-    EditComponent
+    EditComponent,
+    EditingUserComponent
   ],
   imports: [
     AppRoutingModule,

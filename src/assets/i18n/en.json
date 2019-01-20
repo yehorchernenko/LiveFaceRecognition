@@ -41,5 +41,11 @@
     "presentTime": "Present time: ",
     "enteredAt": "Entered at: ",
     "exitedAt": "Exited at: "
+  },
+  "Edit": {
+    "name": "Name: ",
+    "email": "Email: ",
+    "deleteButton": "Delete",
+    "editButton": "Edit"
   }
 }

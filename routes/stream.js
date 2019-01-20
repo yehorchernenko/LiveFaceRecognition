@@ -11,6 +11,8 @@ const Visitor = require('../entities/Visitor');
 const _ = require('lodash');
 const EmailService = require('../models/EmailService');
 const generator = require('generate-password');
+const exec = require('sync-exec');
+
 require('dotenv').config();
 
 let faceRecon = new FaceRecognizer();
@@ -205,6 +207,18 @@ router.get('/user/list', function (req, res) {
 
     res.status(200).json(visitors.map((visitor) => visitor.toJSON()))
   });
+});
+
+router.post('/user/delete', function (req, res) {
+//TODO: - remove from net
+  User.findOne({_id: req.body._id}, (options, result) => {
+      exec(`rm -Rf ${path.resolve('./uploads/', result.email)}`);
+      Visitor.findOneAndRemove(`user.email: ${result.email}`).then(() => {
+        User.findOneAndRemove({_id: result._id}).then(() => {
+          res.status(200).send();
+        });
+      })
+  })
 });
 
 router.post('/admin/login', function (req, res) {

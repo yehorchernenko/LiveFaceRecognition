@@ -7,6 +7,7 @@ import { UserLoginComponent } from './user-login/user-login.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { AdminLoginComponent } from './admin-login/admin-login.component';
 import { EditComponent } from './edit/edit.component';
+import { EditingUserComponent } from './editing-user/editing-user.component';
 
 const routes: Routes = [
   {
@@ -33,6 +34,11 @@ const routes: Routes = [
     path: 'admin/edit',
     component: EditComponent,
     data: { title: 'Edit.'}
+  },
+  {
+    path: 'admin/edit/user',
+    component: EditingUserComponent,
+    data: { title: 'Editing user.'}
   },
   {
     path: 'admin/user/new',

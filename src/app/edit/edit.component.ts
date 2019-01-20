@@ -40,7 +40,20 @@ export class EditComponent implements OnInit {
   }
 
   deleteTouched(user) {
-    console.log(user);
+
+    this.apiService.deleteUserById(user.id).subscribe(response => {
+      if (response.status === 200) {
+        this.apiService.getUserList().subscribe(users => {
+          this.userList = users.map(json => {
+            return new UserEdit(json._id, json.displayName, json.email, json.password, json.images);
+          });
+        }, error => {
+          console.log(`Fetching visitor list error ${error}`);
+        });
+      }
+    }, error => {
+      console.log(`Error ${error}`);
+    });
   }
 
 }

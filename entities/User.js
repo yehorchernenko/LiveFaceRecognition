@@ -32,6 +32,7 @@ UserSchema.methods.toJSON = function () {
     email: userObject.email,
     images: userObject.images,
     password: userObject.password,
+    _id: userObject._id
   }
 };
 
