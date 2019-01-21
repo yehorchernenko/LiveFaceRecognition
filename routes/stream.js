@@ -129,8 +129,18 @@ router.post('/user/update/photo', upload, function (req, res) {
       faceRecon.cropImages(obj.email, tmpStoragePath);
       faceRecon.addFacesFor(obj);
 
-      emptyTmpDir(obj.email).then(() => {
-        res.status(200).send({message: `Added new photo for email: ${req.body.email}`});
+      const dataPath = path.resolve('./uploads/', obj.email);
+      const allFiles = fs.readdirSync(dataPath)
+        .map(fp => path.resolve(dataPath, fp))
+        .map(fp => {
+          return base64Img.base64Sync(fp);
+        });
+
+      User.findOneAndUpdate({_id: obj._id}, {$set: {images: allFiles}}, (option, u) => {
+
+        emptyTmpDir(obj.email).then(() => {
+          res.status(200).send({message: `Added new photo for email: ${req.body.email}`});
+        });
       });
 
     } else {

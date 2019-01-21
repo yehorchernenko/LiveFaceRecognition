@@ -18,6 +18,7 @@ const adminLoginURL = '/api/admin/login';
 const userDeleteURL = '/api/user/delete';
 const userByIdURL = '/api/user/by/id';
 const updateUserURL = '/api/user/update';
+const updateUserPhotoURL = '/api/user/update/photo';
 
 @Injectable({
   providedIn: 'root'
@@ -70,6 +71,15 @@ export class ApiService {
     uploadData.append('images', user.images[0]);
 
     return this.http.post(newUserURL, uploadData, {observe: 'response'});
+  }
+
+  updateUserPhoto(email: string, files: [File]) {
+    const uploadData = new FormData();
+    uploadData.append('email', email);
+    uploadData.append('images', files[0]);
+
+
+    return this.http.post(updateUserPhotoURL, uploadData, {observe: 'response'});
   }
 
   getVisitorList(): Observable<any> {

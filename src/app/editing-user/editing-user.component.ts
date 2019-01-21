@@ -16,7 +16,7 @@ export class EditingUserComponent implements OnInit {
 
   constructor(private apiService: ApiService, protected localStorage: LocalStorage, private router: Router, private activatedRouter: ActivatedRoute, private translate: TranslateService) { }
   model = new UserEdit('', '', '', '', []);
-
+  images = null;
   ngOnInit() {
     this.localStorage.getItem('admin').subscribe((admin: string) => {
       if (!admin) {
@@ -38,6 +38,19 @@ export class EditingUserComponent implements OnInit {
 
   onSubmit() {
     this.apiService.updateUser(this.model).subscribe(response => {
+      if (response.status === 200) {
+        this.router.routeReuseStrategy.shouldReuseRoute = function () { return false; };
+      }
+    });
+  }
+
+  onImagesChanged(event) {
+    this.images = event.target.files;
+  }
+
+  onUploadTouched() {
+    console.log(this.model.email)
+    this.apiService.updateUserPhoto(this.model.email, this.images).subscribe(response => {
       if (response.status === 200) {
         this.router.routeReuseStrategy.shouldReuseRoute = function () { return false; };
       }
