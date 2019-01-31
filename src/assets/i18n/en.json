@@ -10,7 +10,8 @@
   "AdminPanel": {
     "home": "Home",
     "stream": "Stream",
-    "addNewUser": "Add new user"
+    "addNewUser": "Add new user",
+    "edit": "Editing"
   },
   "AddNewUser": {
     "title": "Add new user.",
@@ -46,6 +47,11 @@
     "name": "Name: ",
     "email": "Email: ",
     "deleteButton": "Delete",
-    "editButton": "Edit"
+    "editButton": "Edit",
+    "title": "User editing",
+    "upload": "Send",
+    "back": "Back",
+    "photos": "Photos",
+    "password": "Password"
   }
 }

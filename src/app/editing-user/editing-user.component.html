@@ -1,4 +1,4 @@
-<button mat-button [routerLink]="['/admin/edit']" style="background-color: lightgray; clear: both">{{'back' | translate}}</button>
+<button mat-button [routerLink]="['/admin/edit']" style="background-color: lightgray; clear: both; margin-left: 10px">{{'Edit.back' | translate}}</button>
 <div class="container">
 
   <form (ngSubmit)="onSubmit()">
@@ -18,7 +18,7 @@
     </mat-form-field>
 
     <div class="add-button-container">
-      <button mat-flat-button class="add-button" type="submit">{{'Edit.done' | translate}}</button>
+      <button mat-flat-button class="add-button" type="submit">{{'Edit.editButton' | translate}}</button>
     </div>
   </form>
 
@@ -28,11 +28,11 @@
     </div>
   </div>
   <form>
-    <label>{{'Edit.images' | translate}}</label>
+    <label>{{'Edit.photos' | translate}}</label>
     <input placeholder="Images" type="file" multiple accept="image/jpeg" id="images"
            name="images" (change)="onImagesChanged($event)">
     <div class="add-button-container">
-      <button mat-flat-button class="add-button" (click)="onUploadTouched()">{{'Edit.add' | translate}}</button>
+      <button mat-flat-button class="add-button" (click)="onUploadTouched()">{{'Edit.upload' | translate}}</button>
     </div>
   </form>
 </div>
